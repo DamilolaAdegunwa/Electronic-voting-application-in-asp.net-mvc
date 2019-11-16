@@ -1,0 +1,52 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "About";
+    hrEntities db = new hrEntities();
+    var time2 = DateTime.Now.TimeOfDay;
+    var time3 = DateTime.Now.ToFileTime();
+    var time4 = DateTime.Now.ToFileTimeUtc();
+    var time5 = DateTime.Now.ToLocalTime();
+    var time6 = DateTime.Now.ToShortTimeString();
+    var time7 = DateTime.Now.ToLongTimeString();
+    var time8 = DateTime.Now.ToUniversalTime();
+
+    var date2 = DateTime.Now.Date;
+    var date3 = DateTime.Now.ToLongDateString();
+    var date4 = DateTime.Now.ToShortDateString();
+    var date5 = DateTime.Now.ToOADate();
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+<p>Use this area to provide additional information.</p>
+@time2 -- @date2<br/>
+@time3 -- @date3<br/>
+@time4 -- @date4<br/>
+@time5 -- @date5<br/>
+@time6 <br/>
+@time7 <br/>
+@time8 <br/>
+
+@foreach(var t in db.VotingSessions)
+{
+    //
+    //var d = Convert.ToDateTime(t.startDate).
+    //string s = Convert.ToString(t.startDate) +" "+ Convert.ToString(t.startTime);
+    //DateTime ds = Convert.ToDateTime(s);
+
+    var d = Convert.ToDateTime(t.startDate).ToShortDateString();
+    var ty = Convert.ToDateTime(t.startTime.ToString()).ToLongTimeString();
+    DateTime x = Convert.ToDateTime("3/9/2018 4:55:48 PM ");
+    var s = d + " " + ty;
+    DateTime dty = Convert.ToDateTime(s);
+
+   @*<p>@s</p>
+   <p>@dty</p>*@
+    if (dty > x)
+    {
+        <p>true</p>
+    }
+    else
+    {
+        <p>false</p>
+    }
+}

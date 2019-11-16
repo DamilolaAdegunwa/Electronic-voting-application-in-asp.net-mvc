@@ -1,0 +1,53 @@
+﻿@using Evote.Models.Helpers
+@model Contestant
+@{
+    ViewBag.Title = "SendMail";
+    //int Id = ViewBag.Id;
+}
+<div class="agile-grids" style="min-height:100vh">
+    @Html.BootstrapValidationSummary()
+    @Html.ShowFlashMessage()
+    <div class="progressbar-heading grids-heading">
+        <h2>Send Mail</h2>
+    </div>
+    <div class="banner">
+        <h2>
+            <a href="@Url.Action("Dashboard", "Admin")">Admin</a>
+            <i class="fa fa-angle-right"></i>
+            <span><a href="@Url.Action("SendMail", "Admin")">SendMail</a></span>
+        </h2>
+    </div>
+    <div class="panel panel-widget forms-panel">
+        <div class="forms">
+            <div class="form-grids form-grids-right">
+                <div class="widget-shadow " data-example-id="basic-forms">
+                    <div class="form-title">
+                        <h4>Input information here :</h4>
+                    </div>
+                    <div class="form-body">
+                        <form class="form-horizontal" method="post" action="@Url.Action("SendMail", "Admin")" enctype="multipart/form-data">
+                            <fieldset>
+                                <legend>E-Mail Details: </legend>
+                                <div class="form-group">
+                                    <label for="subject" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="subject" class="form-control" id="subject" placeholder="Subject" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message" class="col-sm-2 control-label">Message</label>
+                                    <div class="col-sm-9">
+                                        <textarea name="message" id="message" cols="50" rows="6" class="form-control" required></textarea>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="col-sm-offset-2">
+                                <button type="submit" class="btn btn-default w3ls-button">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿@using Evote.Models.Helpers
+@{
+    ViewBag.Title = "RegisterPosition";
+}
+<div class="agile-grids" style="min-height:100vh">
+    <!-- RegisterMember-page -->
+    @Html.BootstrapValidationSummary()
+    @Html.ShowFlashMessage()
+    <div class="progressbar-heading grids-heading">
+        <h2>Register Position</h2>
+    </div>
+    <div class="banner">
+        <h2>
+            <a href="@Url.Action("Dashboard", "Admin")">Admin</a>
+            <i class="fa fa-angle-right"></i>
+            <span><a href="@Url.Action("RegisterPosition", "Admin")">RegisterPosition</a></span>
+        </h2>
+    </div>
+    <div class="panel panel-widget forms-panel">
+        <div class="forms">
+            <div class="form-grids form-grids-right">
+                <div class="widget-shadow " data-example-id="basic-forms">
+                    <div class="form-title">
+                        <h4>Input information here :</h4>
+                    </div>
+                    <div class="form-body">
+                        <form class="form-horizontal" method="post" action="@Url.Action("RegisterPosition", "Admin")" enctype="multipart/form-data">
+                            @*<fieldset>
+                                <legend>Personal Information: </legend>*@
+                            <div class="form-group">
+                                @* post *@
+                                <label for="post" class="col-sm-2 control-label">Post</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="Post" class="form-control" id="Post" placeholder="Post">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @* Description *@
+                                <label for="Description" class="col-sm-2 control-label">Description</label>
+                                <div class="col-sm-9">
+                                    <textarea name="Description" id="Description" cols="50" rows="6" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-offset-2">
+                                <button type="submit" class="btn btn-default w3ls-button">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //RegisterMember-page -->
+</div>

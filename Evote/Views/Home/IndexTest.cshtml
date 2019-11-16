@@ -1,0 +1,526 @@
+﻿@using Evote.Models.Helpers
+@model Evote.Contestant
+@{
+    Layout = null;
+    hrEntities db = new hrEntities();
+    var model = db.VotingSessions;
+    var email = Session["Username"].ToString();
+}
+<html>
+<head>
+    <title>The Voting Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <style>
+        body {
+            font: 400 15px/1.8 Lato, sans-serif;
+            color: #777;
+        }
+
+        h3, h4 {
+            margin: 10px 0 30px 0;
+            letter-spacing: 10px;
+            font-size: 20px;
+            color: #111;
+        }
+
+        .container {
+            padding: 80px 120px;
+        }
+
+        .person {
+            border: 10px solid transparent;
+            margin-bottom: 25px;
+            width: 80%;
+            height: 80%;
+            opacity: 0.7;
+        }
+
+        .person:hover {
+            border-color: #f1f1f1;
+        }
+
+        .carousel-inner img {
+            -webkit-filter: grayscale(90%);
+            filter: grayscale(90%); /* make all photos black and white */
+            width: 100%; /* Set width to 100% */
+            margin: auto;
+        }
+
+        .carousel-caption h3 {
+            color: #fff !important;
+        }
+
+        @@media (max-width: 600px) {
+            .carousel-caption {
+                display: none; /* Hide the carousel text when the screen is less than 600 pixels wide */
+            }
+        }
+        .bg-1 {
+            background: #2d2d30;
+            color: #bdbdbd;
+        }
+
+        .bg-1 h3 {
+            color: #fff;
+        }
+
+        .bg-1 p {
+            font-style: italic;
+        }
+
+        .list-group-item:first-child {
+            border-top-right-radius: 0;
+            border-top-left-radius: 0;
+        }
+
+        .list-group-item:last-child {
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .thumbnail {
+            padding: 0 0 15px 0;
+            border: none;
+            border-radius: 0;
+        }
+
+        .thumbnail p {
+            margin-top: 15px;
+            color: #555;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            color: #f1f1f1;
+            border-radius: 0;
+            transition: .2s;
+        }
+
+        .btn:hover, .btn:focus {
+            border: 1px solid #333;
+            background-color: #fff;
+            color: #000;
+        }
+
+        .modal-header{
+            background-color: #428bca;
+            color: #fff !important;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        h4, .close {
+            color: #fff !important;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .modal-body {
+            padding: 40px 50px;
+        }
+
+        .modal-header {
+            padding: 5px 50px;
+        }
+
+        .nav-tabs li a {
+            color: #777;
+        }
+
+        #googleMap {
+            width: 100%;
+            height: 400px;
+            -webkit-filter: grayscale(100%);
+            filter: grayscale(100%);
+        }
+
+        .navbar {
+            font-family: Montserrat, sans-serif;
+            margin-bottom: 0;
+            background-color: #2d2d30;
+            border: 0;
+            font-size: 11px !important;
+            letter-spacing: 4px;
+            opacity: 0.9;
+        }
+
+            .navbar li a, .navbar .navbar-brand {
+                color: #d5d5d5 !important;
+            }
+
+        .navbar-nav li a:hover {
+            color: #fff !important;
+        }
+
+        .navbar-nav li.active a {
+            color: #fff !important;
+            background-color: #00bcd4 !important;
+        }
+
+        .navbar-default .navbar-toggle {
+            border-color: transparent;
+        }
+
+        .open .dropdown-toggle {
+            color: #fff;
+            background-color: #555 !important;
+        }
+
+        .dropdown-menu li a {
+            color: #000 !important;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: red !important;
+        }
+
+        footer {
+            background-color: #2d2d30;
+            color: #f5f5f5;
+            padding: 0;
+        }
+
+        footer a {
+            color: #f5f5f5;
+        }
+
+        footer a:hover {
+            color: #777;
+            text-decoration: none;
+        }
+
+        .form-control {
+            border-radius: 0;
+        }
+
+        textarea {
+            resize: none;
+        }
+    </style>
+</head>
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
+@*@Html.BootstrapValidationSummary()
+@Html.ShowFlashMessage()*@
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color:#00bcd4;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#myPage"><img src="~/testimages/ican.png" width="40" alt="ICAN"/></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#myPage" style="color:#ffffff !important;font-weight:bold;font-size:1.5em;">Welcome @db.EligibleMembers.Where(dbl => dbl.email == email).First().fullname</a></li>
+                    @*<li><a href="#myPage">HOME</a></li>
+                    <li><a href="#band">CONTESTANT</a></li>
+                    <li><a href="#tour">VOTE</a></li>*@
+                    <li style="background-color:#00bcd4;"><a href="#contact" style="background-color:#00bcd4;">CONTACT</a></li>
+                    @*<li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            MORE
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Merchandise</a></li>
+                            <li><a href="#">Extras</a></li>
+                            <li><a href="#">Media</a></li>
+                        </ul>
+                    </li>*@
+                    @*<li><a href="#"><span class="glyphicon glyphicon-search"></span></a></li>*@
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    @*<div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            @{
+                var cnumber = 0;
+                foreach (var ctt in db.Contestants)
+                {
+                    if (cnumber == 0)
+                    {<li data-target="#myCarousel" data-slide-to="0" class="active"></li>}
+                    else
+                    {<li data-target="#myCarousel" data-slide-to="cnumber"></li>}
+                    cnumber++;
+                }
+            }
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            @{
+                cnumber = 0;
+                foreach (var ctt in db.Contestants)
+                {
+                    if (cnumber == 0)
+                    {
+                        <div class="item active">
+                            <img src="~/Home/GetCampaignFile/@ctt.Id" alt="New York" width="1200" height="700">
+                            <div class="carousel-caption">
+                                <h3>New York</h3>
+                                <p>The atmosphere in New York is lorem ipsum.</p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="item">
+                            <img src="~/Home/GetCampaignFile/@ctt.Id" alt="New York" width="1200" height="700">
+                            <div class="carousel-caption">
+                                <h3>New York</h3>
+                                <p>The atmosphere in New York is lorem ipsum.</p>
+                            </div>
+                        </div>
+                    }
+                    cnumber++;
+                }
+            }
+        </div>
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>*@
+
+    <!-- Container (A Loop For Each Voting Session Starts) -->
+@foreach (var item in model)
+{
+    var sdate = Convert.ToDateTime(item.startDate).ToShortDateString();
+    var stime = Convert.ToDateTime(item.startTime.ToString()).ToLongTimeString();
+    //DateTime datetime = Convert.ToDateTime("3/9/2018 4:55:48 PM ");
+    var sdatetime = sdate + " " + stime;
+    DateTime sDATEtime = Convert.ToDateTime(sdatetime);
+
+    var cdate = Convert.ToDateTime(item.closeDate).ToShortDateString();
+    var ctime = Convert.ToDateTime(item.closeTime.ToString()).ToLongTimeString();
+    //DateTime datetime = Convert.ToDateTime("3/9/2018 4:55:48 PM ");
+    var cdatetime = cdate + " " + ctime;
+    DateTime cDATEtime = Convert.ToDateTime(cdatetime);
+
+    if (sDATEtime < DateTime.Now && cDATEtime > DateTime.Now)
+    {
+        <!-- Container (The Band Section Starts) -->
+        <div id="band" class="container text-center">
+            <h3>@item.Position.Post</h3>
+            <p><em>to tell you a little...</em></p>
+            <p>@item.Position.Description</p>
+            <br>
+            <div class="row">
+                @foreach (var specificItem in db.Contestants.Where(dbl => dbl.PositionId == item.PositionId).OrderBy(dbl => dbl.fullname))
+                {
+                    <div class="col-sm-4">
+                        <p class="text-center"><strong>@specificItem.fullname</strong></p><br>
+                        <a href="#@specificItem.Id@specificItem.Id" data-toggle="collapse">
+                            <img src="~/Home/GetFile/@specificItem.Id" class="img-circle person" alt="@specificItem.fullname" width="255" height="255" style="max-width:255px;max-height:255px;">
+                        </a>
+                        @*<div id="@specificItem.Id@specificItem.Id" class="collapse">
+                            <p>Brilliant</p>
+                            <p>Loves Humanity</p>
+                            <p>Member since 2005</p>
+                        </div>*@
+                    </div>
+                }
+            </div>
+
+        </div>
+<!-- Container (The Band Section Ends) -->
+
+<!-- Container (TOUR Section Starts) 11cde5 22def6 -->
+        <div id="tour" class="bg-1" style="background-color:rgba(0,188,212,1);">
+            <div class="container" style="background-color:rgba(0,188,212,1);">
+                <h3 class="text-center" style="font-size:1.5em;"><b>CAMPAIGN BANNER</b></h3>
+                <p class="text-center" style="color:#fff;font-size:1.2em;">Have a look at all of the contestants and<br>Remember to cast your vote!</p>
+                <ul class="list-group">
+                    <li class="list-group-item"><span style="color:#000;">@item.startDate.Value.Date.ToLongDateString()</span> <span class="label label-success">Start Date!</span></li>
+                    <li class="list-group-item"><span style="color:#000;">@item.closeDate.Value.Date.ToLongDateString()</span> <span class="label label-danger">Close Date!</span></li>
+                    <li class="list-group-item"><span style="color:#000;">Number of Contestants</span> <span class="badge" style="text-align:left;">@db.Contestants.Where(dbl => dbl.VotingSessionId == item.Id).Count()</span></li>
+                </ul>
+                <div id="warn">
+                    @Html.BootstrapValidationSummary()
+                    @Html.ShowFlashMessage()
+                </div>
+                <div class="row text-center">
+                @foreach (var specificItem in db.Contestants.Where(dbl => dbl.PositionId == item.PositionId).OrderBy(dbl => dbl.fullname))
+                {
+                        <div class="col-sm-4">
+                            <div class="thumbnail" style="height:300px;">
+                                <img src="~/Home/GetCampaignFile/@specificItem.Id" style="width:100%; height:60%;">
+                                <p><strong>@specificItem.fullname</strong></p>
+                                <p>@item.Position.Post</p>
+                                <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#myModal@(specificItem.Id)">Vote</button>
+                            </div>
+                        </div>
+                    <!-- Modal Starts -->
+                        <div class="modal fade" id="myModal@(specificItem.Id)" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">×</button>
+                                        <h4> Cast Your Vote </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form role="form" method="post" action="@Url.Action("IndexTest", "Home", new { contestantId = specificItem.Id, VoteSessionId = item.Id } )">
+                                            <div class="form-group" style="text-align:left;">
+                                                <label for="psw"><span class="glyphicon glyphicon-shopping-cart"></span> Position of Vote </label>
+                                                <div class="form-control" id="psw" style=""><p>@item.Position.Post</p></div>
+                                            </div>
+                                            <div class="form-group" style="text-align:left;">
+                                                <label for="usrname1"><span class="glyphicon glyphicon-user"></span> Name of Candidate</label>
+                                                <div class="form-control" id="usrname1" style=""><p>@specificItem.fullname</p></div>
+                                            </div>
+                                            <div class="form-group" >
+                                                <label for="usrname" style="color:red;"><span class="glyphicon glyphicon-warning-sign"></span>Warning!!</label>
+                                                <div class="form-control" id="usrname" style="color:red;height:60px;"><p>Please note that the vote you are about to cast would be counted as valid and is irreversible!!</p></div>
+                                            </div>
+                                            <button type="submit" class="btn btn-success center-block">Vote<span class="glyphicon glyphicon-ok"></span></button>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-danger pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Cancel</button>
+                                        <p>Need <a href="#contact">help?</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- Modal Ends -->
+                    }
+                    
+                </div>
+            </div>
+        </div>
+    <!-- Container (TOUR Section Ends) -->
+
+    <!-- Container (Contact Section Starts) -->
+        <div class="container">
+            <h3 class="text-center">From The Contestants</h3>
+            <ul class="nav nav-tabs">
+                @{ var cxf = db.Contestants.Where(dbl => dbl.PositionId == item.PositionId).OrderBy(dbl => dbl.fullname);}
+                @foreach (var specificItem in cxf)
+                {
+                    if (specificItem == cxf.First())
+                    {
+                        <li class="active"><a data-toggle="tab" href="#home">@specificItem.fullname</a></li>
+                    }
+                    else
+                    {
+                        <li><a data-toggle="tab" href="#menu@(specificItem.Id)">@specificItem.fullname</a></li>
+                    }
+                }
+            </ul>
+
+            <div class="tab-content">
+                @foreach (var specificItem in cxf)
+                {
+                    if (specificItem == cxf.First())
+                    {
+                        <div id="home" class="tab-pane fade in active">
+                            <h2>@specificItem.fullname, @item.Position.Post</h2>
+                            <p>@specificItem.manifesto</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="menu@(specificItem.Id)" class="tab-pane fade">
+                            <h2>@specificItem.fullname, @item.Position.Post</h2>
+                            <p>@specificItem.manifesto</p>
+                        </div>
+                    }
+                }
+            </div>
+            <br />
+
+        </div>
+<!-- Container (Contact Section Ends) -->
+    }
+}
+    <div id="contact" class="container">
+        <hr />
+        <h3 class="text-center">Contact</h3>
+        <p class="text-center"><em>We love our members!</em></p>
+
+        <div class="row">
+            <div class="col-md-4">
+                <p>Any Comment? Drop a note.</p>
+                <p><span class="glyphicon glyphicon-map-marker"></span>Lagos, Nigeria</p>
+                <p><span class="glyphicon glyphicon-phone"></span>Phone: +234 8123456789</p>
+                <p><span class="glyphicon glyphicon-globe"></span>globe: http://www.icanig.org/ican/ </p>
+                <p><span class="glyphicon glyphicon-envelope"></span>Email: membership@ican.org.ng</p>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+                    </div>
+                </div>
+                <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea>
+                <br>
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <button class="btn pull-right" type="submit">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- Container (A Loop For Each Voting Session Ends) -->
+        
+        <!-- Footer -->
+        <footer class="text-center" style="background-color:rgba(0,188,212,1);">
+            <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="TO TOP">
+                <span class="glyphicon glyphicon-chevron-up"></span>
+            </a><br><br>
+            <p>Made By <a href="http://www.3consult-ng.com/home/" data-toggle="tooltip" title="3Consulting Limited">3Consulting Limited</a></p>
+        </footer>
+
+        <script>
+            $(document).ready(function () {
+                // Initialize Tooltip
+                $('[data-toggle="tooltip"]').tooltip();
+
+                // Add smooth scrolling to all links in navbar + footer link
+                $(".navbar a, footer a[href='#myPage']").on('click', function (event) {
+
+                    // Make sure this.hash has a value before overriding default behavior
+                    if (this.hash !== "") {
+
+                        // Prevent default anchor click behavior
+                        event.preventDefault();
+
+                        // Store hash
+                        var hash = this.hash;
+
+                        // Using jQuery's animate() method to add smooth page scroll
+                        // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+                        $('html, body').animate({
+                            scrollTop: $(hash).offset().top
+                        }, 900, function () {
+
+                            // Add hash (#) to URL when done scrolling (default click behavior)
+                            window.location.hash = hash;
+                        });
+                    } // End if
+                });
+            })
+        </script>
+
+</body>
+</html>

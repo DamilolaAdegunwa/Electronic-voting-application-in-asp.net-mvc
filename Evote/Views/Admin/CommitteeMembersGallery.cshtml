@@ -1,0 +1,162 @@
+﻿@using Evote.Models.Helpers
+@{
+    ViewBag.Title = "CommitteeMembersGallery";
+    hrEntities db = new hrEntities();
+}
+<style>
+    @@media(max-width:1440px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 187.03px;
+        }
+    }
+
+    @@media(max-width:1366px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 174.72px;
+            width: 100%;
+        }
+    }
+
+    @@media(max-width:1280px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 160.41px;
+        }
+    }
+
+    @@media(max-width:1080px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 127.13px;
+        }
+    }
+
+    @@media(max-width:1024px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 117.81px;
+        }
+    }
+
+    @@media(max-width:991px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 112.31px;
+        }
+    }
+
+    @@media(max-width:800px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 402.03px;
+        }
+    }
+
+    @@media(max-width:768px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 380.73px;
+        }
+    }
+
+    @@media(max-width:736px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 359.44px;
+        }
+    }
+
+    @@media(max-width:600px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 311.5px;
+        }
+    }
+
+    @@media(max-width:568px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 290.2px;
+        }
+    }
+
+    @@media(max-width:480px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 231.63px;
+        }
+    }
+
+    @@media(max-width:479px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 258.92px;
+        }
+    }
+
+    @@media(max-width:414px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 227.64px;
+        }
+    }
+
+    @@media(max-width:375px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 201.67px;
+        }
+    }
+
+    @@media(max-width:320px) {
+        .agile-gallery > .lsb-preview > img {
+            height: 165.06px;
+        }
+    }
+</style>
+@*<div class="main-grid">*@
+<div class="agile-grids">
+    <!-- eligible members gallery -->
+    <div class="grids-heading gallery-heading">
+        <h2>Committee Members Gallery</h2>
+    </div>
+    <div class="banner">
+        <h2>
+            <a href="@Url.Action("Dashboard", "Admin")">Admin</a>
+            <i class="fa fa-angle-right"></i>
+            <span><a href="@Url.Action("CommitteeMembersGallery", "Admin")" title="Gallery for Eligible Members">CommitteeMembersGallery</a></span>
+        </h2>
+    </div>
+    <div class="gallery-grids">
+        <br /><br />
+        @{
+            var counter = 0;
+            Committee_member[] itemarray = new Committee_member[db.Committee_member.Count()];
+            foreach (var itm in db.Committee_member)
+            {
+                itemarray[counter] = itm;
+                counter++;
+            }
+            counter = 0;
+        }
+        @foreach (var item in db.Committee_member)
+        {
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/Admin/GetCommitteeFile/@item.Id" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/Admin/GetCommitteeFile/@item.Id" />
+                        <div class="agileits-caption">
+                            <h4>@item.EligibleMember.fullname</h4>
+                            <h5>@item.EligibleMember.email</h5>
+                            <p>@item.EligibleMember.phone_number</p>
+                            <p>@item.EligibleMember.membership_number</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            if (counter % 4 == 3)
+            {
+                <div class="clearfix"> </div>
+                <br /><br />
+            }
+            counter++;
+        }
+        <div class="clearfix"> </div>
+        <script>
+		    $(window).load(function() {
+			    $.fn.lightspeedBox();
+		    });
+        </script>
+    </div>
+    <!-- //eligible members gallery -->
+</div>
+@*</div>*@
+<link href="~/admincss/lsb.css" rel="stylesheet" />
+<script src="~/adminjs/lsb.js"></script>

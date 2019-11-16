@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "VoteLog";
+    hrEntities db = new hrEntities();
+}
+<!--<link href="bootstrap.min.css" rel="stylesheet" />
+<link href="dataTables.bootstrap.min.css" rel="stylesheet" />-->
+<link href="~/dataTablecss/bootstrap.min.css" rel="stylesheet" />
+<link href="~/dataTablecss/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<div class="agile-grids" style="min-height:100vh">
+    <!-- blank-page -->
+    <div class="progressbar-heading grids-heading">
+        <h2>Vote Log</h2>
+    </div>
+    <div class="banner">
+        <h2>
+            <a href="@Url.Action("Dashboard", "Admin")">Admin</a>
+            <i class="fa fa-angle-right"></i>
+            <a href="@Url.Action("VoteLog", "Admin")">VoteLog</a>
+        </h2>
+    </div>
+    <table id="example" class="table table-striped table-bordered table-hover table-responsive" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>Voter's Fullname</th>
+                <th>Voter's Email</th>
+                <th>Time of Vote</th>
+                <th>Position</th>
+                <th>Name of Candidate</th>
+                @*<th>Vote Session Name</th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @{ var c = 1;}
+            @foreach (var item in db.voteLogs)
+            {
+                <tr>
+                    <td>@c</td>
+                    <td>@item.EligibleMember.fullname</td>
+                    <td>@item.EligibleMember.email</td>
+                    <td>@item.datetime</td>
+                    <td>@item.VotingSession.Position.Post</td>
+                    <td>@item.Contestant.EligibleMember.fullname</td>
+                    @*<td>@item.VotingSession.VotingSessionName</td>*@
+                </tr>
+                c++;
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>S/N</th>
+                <th>Voter's Fullname</th>
+                <th>Voter's Email</th>
+                <th>Time of Vote</th>
+                <th>Position</th>
+                <th>Name of Candidate</th>
+                @*<th>Vote Session Name</th>*@
+            </tr>
+        </tfoot>
+    </table>
+    <!--<script src="jquery-1.12.4.js"></script>
+    <script src="jquery.dataTables.min.js"></script>
+    <script src="dataTables.bootstrap.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+
+    <script src="~/dataTablejs/jquery-1.12.4.js"></script>
+    <script src="~/dataTablejs/jquery.dataTables.min.js"></script>
+    <script src="~/dataTablejs/dataTables.bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
+    </script>
+</div>

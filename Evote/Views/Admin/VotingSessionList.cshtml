@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "VotingSessionList";
+    hrEntities db = new hrEntities();
+}
+<!--<link href="bootstrap.min.css" rel="stylesheet" />
+<link href="dataTables.bootstrap.min.css" rel="stylesheet" />-->
+<link href="~/dataTablecss/bootstrap.min.css" rel="stylesheet" />
+<link href="~/dataTablecss/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<div class="agile-grids" style="min-height:100vh">
+    <!-- blank-page -->
+    <div class="progressbar-heading grids-heading">
+        <h2 style="margin:0;padding:0;">VotingSessionList</h2>
+    </div>
+    <div class="banner">
+        <h2>
+            <a href="@Url.Action("Dashboard", "Admin")">Admin</a>
+            <i class="fa fa-angle-right"></i>
+            <a href="@Url.Action("VotingSessionList", "Admin")">VotingSessionList</a>
+        </h2>
+    </div>
+    <table id="example" class="table table-striped table-bordered table-hover table-responsive" cellspacing="0" style="width:100%">
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>POSITION</th>
+                <th>START TIME</th>
+                <th>CLOSE TIME</th>
+                <th>STATUS</th>
+                <th>TIMING</th>
+                <th></th>
+                @*<th></th>*@
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>S/N</th>
+                <th>POSITION</th>
+                <th>START TIME</th>
+                <th>CLOSE TIME</th>
+                <th>STATUS</th>
+                <th>TIMING</th>
+                <th></th>
+                @*<th></th>*@
+            </tr>
+        </tfoot>
+        <tbody>
+            @{
+                var c = 1;
+            }
+            @foreach (var item in db.VotingSessions.OrderByDescending(dbl => dbl.Id))
+            {
+                <tr>
+                    <td>@c</td>
+                    <td>@item.Position.Post</td>
+                    <td>@item.startDateTime</td>
+                    <td>@item.closeDateTime</td>
+                    @if (item.status == true)
+                    {
+                        <td><span style="color:#808080;"><b>Active</b></span></td>
+                    }
+                    else if(item.status == false)
+                    {
+                        <td><span style="color:#808080;"><b>Inactive</b></span></td>
+                    }
+                    @if (item.startDateTime > DateTime.Now)
+                    {
+                        <td><span style="color:#FDC669"><b>Up Coming</b></span></td>
+                    }
+                    else if (DateTime.Now >= item.startDateTime && DateTime.Now <= item.closeDateTime)
+                    {
+                        <td><span style="color:#14C1d7"><b>In Progress</b></span></td>
+                    }
+                    else if (DateTime.Now > item.closeDateTime)
+                    {
+                        <td><span style="color:#5FD78A"><b>Completed</b></span></td>
+                    }
+                    @*@if (item.status == true)
+                    {
+                        <td><a href="@Url.Action("SendMail", "Admin")"><span class="btn btn-xs btn-info text-center col-12 center-block">Send Mail</span></a></td>
+                    }
+                    else
+                    {
+                        <td><a class="disabled" href="@Url.Action("SendMail", "Admin")"><span class="btn disabled btn-xs btn-info text-center col-12 center-block">Send Mail</span></a></td>
+                    }*@
+                    <td><a href="@Url.Action("Report", "Admin", new { Id = item.Id })"><span class="btn btn-xs btn-info text-center center-block">View Report</span></a></td>
+                </tr>
+                c++;
+            }
+        </tbody>
+    </table>
+    <!--<script src="jquery-1.12.4.js"></script>
+    <script src="jquery.dataTables.min.js"></script>
+    <script src="dataTables.bootstrap.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+
+    <script src="~/dataTablejs/jquery-1.12.4.js"></script>
+    <script src="~/dataTablejs/jquery.dataTables.min.js"></script>
+    <script src="~/dataTablejs/dataTables.bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
+    </script>
+</div>

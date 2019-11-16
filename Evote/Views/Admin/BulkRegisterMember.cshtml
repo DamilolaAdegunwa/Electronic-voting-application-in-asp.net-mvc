@@ -1,0 +1,40 @@
+﻿@using Evote.Models.Helpers
+@{
+    ViewBag.Title = "BulkRegisterMember";
+}
+<div class="agile-grids" style="min-height:100vh">
+    <!-- input-forms -->
+    <div class="grids">
+        <div class="progressbar-heading grids-heading">
+            <h2>Upload Members Details</h2>
+        </div>
+        @Html.BootstrapValidationSummary()
+        @Html.ShowFlashMessage()
+        <div class="banner">
+            <h2>
+                <a href="@Url.Action("Dashboard", "Admin")">Admin</a>
+                <i class="fa fa-angle-right"></i>
+                <span><a href="@Url.Action("BulkRegisterMember", "Admin")">BulkRegisterMember</a></span>
+            </h2>
+        </div>
+        <div class="panel panel-widget forms-panel">
+            <div class="forms">
+                <div class="form-grids widget-shadow" data-example-id="basic-forms">
+                    <div class="form-title">
+                        <h4>Upload from excel sheet :</h4>
+                    </div>
+                    <div class="form-body">
+                        <form method="post" action="@Url.Action("BulkRegisterMember", "Admin")" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="exampleInputFile">File input</label>
+                                <input type="file" name="file" id="exampleInputFile">
+                                <p class="help-block">Make sure the file is in .xlsx format</p>
+                            </div>
+                            <button type="submit" class="btn btn-default w3ls-button">Upload</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

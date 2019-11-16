@@ -1,0 +1,143 @@
+﻿@using Evote.Models.Helpers
+@model Contestant
+@{
+    ViewBag.Title = "RegisterContestant";
+}
+
+<div class="agile-grids" style="min-height:100vh">
+        <!-- RegisterContestant-page -->
+        @Html.BootstrapValidationSummary()
+        @Html.ShowFlashMessage()
+        <div class="progressbar-heading grids-heading">
+            <h2>Register Candidate</h2>
+        </div>
+        <div class="banner">
+            <h2>
+                <a href="@Url.Action("Dashboard", "Admin")">Admin</a>
+                <i class="fa fa-angle-right"></i>
+                <span><a href="@Url.Action("RegisterContestant", "Admin")">RegisterContestant</a></span>
+            </h2>
+        </div>
+        @*<div class="blank">
+            <div class="blank-page">
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                    when an unknown printer took a galley of type and scrambled it to make a type specimen book
+                </p>
+            </div>
+        </div>*@
+        <div class="panel panel-widget forms-panel">
+            <div class="forms">
+                <div class="form-grids form-grids-right">
+                    <div class="widget-shadow " data-example-id="basic-forms">
+                        <div class="form-title">
+                            <h4>Input information here :</h4>
+                        </div>
+                        <div class="form-body">
+                            <form class="form-horizontal" method="post" action="@Url.Action("RegisterContestant", "Admin")" enctype="multipart/form-data">
+                                <fieldset>
+                                    <legend>Personal Information: </legend>
+                                    <div class="form-group">
+                                        <label for="email" class="col-sm-2 control-label">Email</label>
+                                        <div class="col-sm-9">
+                                            <input type="email" name="email" class="form-control" id="email" placeholder="Email" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password" class="col-sm-2 control-label">Password</label>
+                                        <div class="col-sm-9">
+                                            <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+                                        </div>
+                                    </div>
+                                    @*<div class="form-group">
+                                        <label for="fullname" class="col-sm-2 control-label">Fullname</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="fullname" class="form-control" id="fullname" placeholder="Fullname" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email" class="col-sm-2 control-label">Email</label>
+                                        <div class="col-sm-9">
+                                            <input type="email" name="email" class="form-control" id="email" placeholder="Email" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phoneNumber" class="col-sm-2 control-label">Phone Number</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="phone_number" class="form-control" id="phoneNumber" placeholder="Phone Number" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="membershipNumber" class="col-sm-2 control-label">Membership Number</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="membership_number" class="form-control" id="membershipNumber" placeholder="Membership Number" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password" class="col-sm-2 control-label">Password</label>
+                                        <div class="col-sm-9">
+                                            <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirmPassword" class="col-sm-2 control-label">Confirm Password</label>
+                                        <div class="col-sm-9">
+                                            <input type="password" name="confirmPassword" class="form-control" id="confirmPassword" placeholder="Confirm Password" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group"> 
+                                        <label for="picture" class="col-sm-2 control-label">Personal Picture</label>
+                                        <div class="col-sm-9">
+                                            <input type="file" id="picture" name="file" required>
+                                            <p class="help-block">Input a picture of yours, preferrably a full picture in portriat form using 
+                                            any common image file type e.g jpg, png </p>
+                                        </div>
+                                    </div>*@
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Voting Information: </legend>
+                                    @{ 
+                                        hrEntities db = new hrEntities();
+                                    }
+                                    <div class="form-group">
+                                        <label for="PositionId" class="col-sm-2 control-label">Position</label>
+                                        <div class="col-sm-9">
+                                            <select name="PositionId" class="form-control" id="PositionId" placeholder="Position" required>
+                                                @foreach (var item in db.VotingSessions.Where(dbl => dbl.status == true))
+                                                {
+                                                    <option value="@item.PositionId">@db.Positions.Find(item.PositionId).Post</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="manifesto" class="col-sm-2 control-label">Manifesto</label>
+                                        <div class="col-sm-9">
+                                            <textarea name="manifesto" id="manifesto" cols="50" rows="6" class="form-control" required></textarea>  
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="campaignPicture" class="col-sm-2 control-label">Campaign Picture</label>
+                                        <div class="col-sm-9">
+                                            <input type="file" id="campaignPicture" name="file" required>
+                                            <p class="help-block">
+                                                Input a your campaign picture, preferrably in landscape form using
+                                                any common image file type e.g jpg, png
+                                            </p>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                    <div class="col-sm-offset-2">
+                                        <button type="submit" class="btn btn-default w3ls-button">Submit</button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- //RegisterContestant-page -->
+    </div>

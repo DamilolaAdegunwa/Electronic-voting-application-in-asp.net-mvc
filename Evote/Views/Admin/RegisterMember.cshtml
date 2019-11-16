@@ -1,0 +1,116 @@
+﻿@using Evote.Models.Helpers
+@model EligibleMember
+@{
+    ViewBag.Title = "RegisterMember";
+    var fullname = "";
+    var email = "";
+    var phone_number = "";
+    var membership_number = "";
+    var password = "";
+    var confirmPassword = "";
+    if (Model != null)
+    {
+        fullname = Model.fullname;
+        email = Model.email;
+        phone_number = Model.phone_number;
+        membership_number = Model.membership_number;
+        password = Model.password;
+        confirmPassword = Model.confirmPassword;
+    }
+}
+<div class="agile-grids" style="min-height:100vh">
+    <!-- RegisterMember-page -->
+    @Html.BootstrapValidationSummary()
+    @Html.ShowFlashMessage()
+    <div class="progressbar-heading grids-heading">
+        <h2>Register Member</h2>
+    </div>
+    <div class="banner">
+        <h2>
+            <a href="@Url.Action("Dashboard", "Admin")">Admin</a>
+            <i class="fa fa-angle-right"></i>
+            <span><a href="@Url.Action("RegisterMember", "Admin")" title="Register ICAN Members">RegisterMember</a></span>
+        </h2>
+    </div>
+    <div class="panel panel-widget forms-panel">
+        <div class="forms">
+            <div class="form-grids form-grids-right">
+                <div class="widget-shadow " data-example-id="basic-forms">
+                    <div class="form-title">
+                        <h4>Input information here :</h4>
+                    </div>
+                    <div class="form-body">
+                        <form class="form-horizontal" method="post" action="@Url.Action("RegisterMember", "Admin")" enctype="multipart/form-data">
+                            @*<fieldset>
+                                <legend>Personal Information: </legend>*@
+                                <div class="form-group">
+                                    @* full name *@
+                                    @*@{ if (Model == null) { Model.fullname = ""; } }*@
+                                    <label for="fullname" class="col-sm-2 control-label">Fullname</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="fullname" class="form-control" id="fullname" placeholder="Fullname" value="@fullname" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @* email *@
+                                    @*@{ if (Model == null) { Model.email = ""; } }*@
+                                    <label for="email" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-9">
+                                        <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="@email" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @* phone number *@
+                                    @*@{ if (Model == null) { Model.phone_number = ""; } }*@
+                                    <label for="phoneNumber" class="col-sm-2 control-label">Phone Number</label>
+                                    <div class="col-sm-9">
+                                        <input type="tel" name="phone_number" class="form-control" id="phoneNumber" placeholder="Phone Number" value="@phone_number" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @* membership number *@
+                                    @*@{ if (Model == null) { Model.membership_number = ""; } }*@
+                                    <label for="membershipNumber" class="col-sm-2 control-label">Membership Number</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="membership_number" class="form-control" id="membershipNumber" placeholder="Membership Number" value="@membership_number" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @* password *@
+                                    @*@{ if (Model == null) { Model.password = ""; } }*@
+                                    <label for="password" class="col-sm-2 control-label">Password</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" name="password" min="8" max="15" class="form-control" id="password" placeholder="Password" value="@password" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @* confirm password *@
+                                    @*@{ if (Model == null) { Model.confirmPassword = ""; } }*@
+                                    <label for="confirmPassword" class="col-sm-2 control-label">Confirm Password</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" name="confirmPassword" min="8" max="15" class="form-control" id="confirmPassword" placeholder="Confirm Password" value="@confirmPassword" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @* personal picture *@
+                                    <label for="picture" class="col-sm-2 control-label">Personal Picture</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" id="picture" name="file" required>
+                                        <p class="help-block">
+                                            Input a personal picture, preferrably a full picture in portriat form using
+                                            any common image file type e.g jpg, png
+                                        </p>
+                                    </div>
+                                </div>
+                            @*</fieldset>*@
+                            <div class="col-sm-offset-2">
+                                <button type="submit" class="btn btn-default w3ls-button">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //RegisterMember-page -->
+</div>

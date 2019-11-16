@@ -1,0 +1,1071 @@
+﻿@using Evote.Models
+@using Newtonsoft.Json.Linq;
+@{
+    ViewBag.Title = "Report";
+    hrEntities db = new hrEntities();
+    int Id = Convert.ToInt32(ViewBag.Id);
+    var pvotingsession = db.VotingSessions.Where(dbl => dbl.Id == Id).First();
+
+    var decValue = 500;
+    string hexValue = decValue.ToString("X");
+    var hex = string.Format("{0:x}", decValue);
+
+    var hexValue2 = "fff";
+    int decValue2 = int.Parse(hexValue2, System.Globalization.NumberStyles.HexNumber);
+    int decValue3 = Convert.ToInt32(hexValue2, 16);
+
+    var pplvote = db.voteLogs.Where(dbl => dbl.VotingSessionId == Id); //people who voted in a particular session
+    var ctts = db.Contestants.Where(dbl => dbl.PositionId == pvotingsession.PositionId); //contestants for that vote session
+
+    var pplvotecount = pplvote.Count();//number of ppl who voted
+    var cttscount = ctts.Count();//number of contestants
+
+    var listctt = new contestantpie();
+    //var cttarray = new 
+    foreach (var ctt in ctts)
+    {
+        var c = pplvote.Where(dbl => dbl.contestantId == ctt.Id).Count();//number
+        var d = (Convert.ToDouble(c) / Convert.ToDouble(pplvotecount)) * 100;//percentage
+        var e = ctt.fullname;
+    }
+}
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- bootstrap-css -->
+@*<link rel="stylesheet" href="css/bootstrap.css">*@
+<link href="~/admincss/bootstrap.css" rel="stylesheet" />
+            @*<div class="item active">
+                <img src="~/testimages/ny.jpg" alt="New York" width="1200" height="700">
+                <div class="carousel-caption">
+                    <h3>New York</h3>
+                    <p>The atmosphere in New York is lorem ipsum.</p>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="~/testimages/chicago.jpg" alt="Chicago" width="1200" height="700">
+                <div class="carousel-caption">
+                    <h3>Chicago</h3>
+                    <p>Thank you, Chicago - A night we won't forget.</p>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="~/testimages/la.jpg" alt="Los Angeles" width="1200" height="700">
+                <div class="carousel-caption">
+                    <h3>LA</h3>
+                    <p>Even though the traffic was a mess, we had the best time playing at Venice Beach!</p>
+                </div>
+            </div>*@
+<!-- //bootstrap-css -->
+<!-- Custom CSS -->
+@*<link href="css/style.css" rel='stylesheet' type='text/css' />*@
+<link href="~/admincss/style.css" rel="stylesheet" />
+<!-- font CSS -->
+<link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<!-- font-awesome icons -->
+@*<link rel="stylesheet" href="css/font.css" type="text/css" />
+<link href="css/font-awesome.css" rel="stylesheet">*@
+
+<link href="~/admincss/font.css" rel="stylesheet" />
+<link href="~/admincss/font-awesome.css" rel="stylesheet" />
+<!-- //font-awesome icons -->
+@*<script src="js/jquery2.0.3.min.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/screenfull.js"></script>*@
+
+<script src="~/adminjs/jquery2.0.3.min.js"></script>
+<script src="~/adminjs/modernizr.js"></script>
+<script src="~/adminjs/jquery.cookie.js"></script>
+<script src="~/adminjs/screenfull.js"></script>
+<script>
+	$(function () {
+		$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
+		if (!screenfull.enabled) {
+			return false;
+		}
+		$('#toggle').click(function () {
+			screenfull.toggle($('#container')[0]);
+		});
+	});
+</script>
+<!-- charts -->
+@*<script src="js/raphael-min.js"></script>
+<script src="js/morris.js"></script>
+<link rel="stylesheet" href="css/morris.css">*@
+
+<script src="~/adminjs/raphael-min.js"></script>
+<script src="~/adminjs/morris.js"></script>
+<link href="~/admincss/morris.css" rel="stylesheet" />
+<!-- //charts -->
+<!--skycons-icons-->
+<script src="~/adminjs/skycons.js"></script>
+<!--//skycons-icons-->
+<div class="main-grid" style="width:100%;margin:1px;padding:1px">
+    <div class="progressbar-heading grids-heading">
+        <h2 style="margin-bottom:1px;">Report</h2>
+    </div>
+    <div class="banner">
+        <h2>
+            <a href="@Url.Action("Report", "Admin", new { Id = ViewBag.Id })">Report</a>
+            <i class="fa fa-angle-right"></i>
+            <span> Report </span>
+        </h2>
+    </div>
+    <div class="social grid">
+        <div class="grid-info">
+            <div class="col-md-3">
+                <div class="comments likes">
+                    <div class="comments-icon">
+                    </div>
+                    <div class="comments-info likes-info">
+                        <h4 style="color:#ffffff;">Start Date</h4>
+                        <br/>
+                        <h6 style="color:#ffffff;">@pvotingsession.startDate.Value.Date.ToLongDateString()</h6>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="comments">
+                    <div class="comments-icon">
+                    </div>
+                    <div class="comments-info">
+                        <h4 style="color:#ffffff;">Close Date</h4>
+                        <br/>
+                        <h6 style="color:#ffffff;">@pvotingsession.closeDate.Value.Date.ToLongDateString()</h6>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="comments tweets">
+                    <div class="comments-icon">
+                    </div>
+                    <div class="comments-info tweets-info">
+                        <h4 style="color:#ffffff;">Number of Contestants</h4>
+                        <br/>
+                        <h6 style="color:#ffffff;">@db.Contestants.Where(dbl => dbl.PositionId == pvotingsession.PositionId).Count()</h6>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <div class="col-md-3" style="">
+                <div class="comments views">
+                    <div class="comments-icon">
+                    </div>
+                    <div class="comments-info views-info">
+                        <h4 style="color:#ffffff;">Number of Voters</h4>
+                        <br/>
+                        <h6 style="color:#ffffff;">@db.voteLogs.Where(dbl => dbl.VotingSessionId == Id).Count()</h6>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+
+    <div class="agile-grids">
+        <div class="col-md-4 charts-right">
+            <!-- area-chart -->
+            <div class="area-grids">
+                <div class="area-grids-heading">
+                    <h3>Area charts</h3>
+                </div>
+                <div id="graph4"></div>
+                @{ 
+                    contestantpie[] dayta = new contestantpie[cttscount];
+                    int ct = 0;
+                }
+                @foreach (var ctt in ctts)
+                {
+                    var c = pplvote.Where(dbl => dbl.contestantId == ctt.Id).Count();//number
+                    var d = (Convert.ToDouble(c) / Convert.ToDouble(pplvotecount)) * 100;//percentage
+                    var e = ctt.fullname;
+                    dayta[ct] = new contestantpie
+                    {
+                        value = c,
+                        label = e,
+                        formatted = "about " + d.ToString("###.00") + "%"
+                    };
+
+                    //dayta += "{value: " + c + ", label: '" + e + "', formatted: 'about " + d.ToString("###.00") + "%' },";
+                    //dayta += string.Format("{0},{1},{2}&", c, e, d);
+                }
+                @{
+                    dayta.ToString();
+                    JObject json = JObject.Parse(dayta.ToString());
+                };
+                @*@{
+                    dayta = dayta.Remove(dayta.Length - 1);
+                    var trythis = @"[ 
+                            { 'value': 30, 'label': 'Aa', 'formatted': 'aa' },
+                            { 'value': 20, 'label': 'Ba', 'formatted': 'ba' },
+                            { 'value': 10, 'label': 'Ca', 'formatted': 'ca' },
+                            { 'value': 40, 'label': 'Da', 'formatted': 'da' },
+                            ] ";
+                    //JObject json = JObject.Parse(trythis);
+                    dayta.Remove(dayta.Length - 1);
+                }*@
+                
+                <input type="text" value="@dayta" id="sp" hidden />
+                @*<span>@dayta</span>*@
+                <script>
+                    //alert(sp.value);
+                    //function cl(val, lab, format) {
+                    //    this.value = val;
+                    //    this.label = lab;
+                    //    this.formatted = format;
+                    //}
+                    //var overall = []
+                    
+                    //var allString = document.getElementById("sp").value;
+                    //alert(allString);
+                    //var sp = allString.split('&');
+
+                    //for (var s in sp) {
+                    //    if (s.length > 0) {
+                    //        var dt = s.split(',');
+
+                    //        alert(s[1]);
+
+                    //        overall.push({
+                    //            value: parseInt(dt[0]),
+                    //            label: dt[1],
+                    //            formatted: dt[2]
+                    //        });
+                    //    }
+                    //}
+                    
+                    //for (var d in overall) {
+                    //    alert(d.value)
+                    //}
+                    Morris.Donut
+                    ({
+                        element: 'graph4',
+                        data: [
+                        
+                            ]
+                        @*@foreach (var ctt in ctts)
+                        {
+                            var c = pplvote.Where(dbl => dbl.contestantId == ctt.Id).Count();//number
+                            var d = (Convert.ToDouble(c) / Convert.ToDouble(pplvotecount)) * 100;//percentage
+                            var e = ctt.fullname;
+                            return "{value: " + c + ", label: '" + e + "', formatted: 'about " + d.ToString("###.00") + "%' },";
+                            //dayta += string.Format("{0},{1},{2}&", c, e, d);
+                        }*@
+                            //[
+                                
+                            //{ "value": 30, "label": "Aa", "formatted": "aa" },
+                            //{ 'value': 20, 'label': 'Ba', 'formatted': 'ba' },
+                            //{ 'value': 10, 'label': 'Ca', 'formatted': 'ca' },
+                            //{ 'value': 40, 'label': 'Da', 'formatted': 'da' },
+                            //]
+                        ,
+					    formatter: function (x, data) { return data.formatted; }
+                    });
+                </script>
+
+            </div>
+            <!-- //area-chart -->
+        </div>
+        <div class="col-md-8 chart-left">
+            <!-- updating-data -->
+            <div class="agile-Updating-grids">
+                <div class="area-grids-heading">
+                    <h3>Updating data</h3>
+                </div>
+                <div id="graph1"></div>
+                <script>
+						var nReloads = 0;
+						function data(offset) {
+						  var ret = [];
+						  for (var x = 0; x <= 360; x += 10) {
+							var v = (offset + x) % 360;
+							ret.push({
+							  x: x,
+							  y: Math.sin(Math.PI * v / 180).toFixed(4),
+							  z: Math.cos(Math.PI * v / 180).toFixed(4)
+							});
+						  }
+						  return ret;
+						}
+						var graph = Morris.Line({
+							element: 'graph1',
+							data: data(0),
+							xkey: 'x',
+							ykeys: ['y', 'z'],
+							labels: ['sin()', 'cos()'],
+							parseTime: false,
+							ymin: -1.0,
+							ymax: 1.0,
+							hideHover: true
+						});
+						function update() {
+						  nReloads++;
+						  graph.setData(data(5 * nReloads));
+						  $('#reloadStatus').text(nReloads + ' reloads');
+						}
+						setInterval(update, 100);
+                </script>
+
+            </div>
+            <!-- //updating-data -->
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+
+    <div class="agile-bottom-grids">
+        <div class="col-md-6 agile-bottom-right">
+            <div class="agile-bottom-grid">
+                <div class="area-grids-heading">
+                    <h3>Stacked Bars chart</h3>
+                </div>
+                <div id="graph6"></div>
+                <script>
+						// Use Morris.Bar
+						Morris.Bar({
+						  element: 'graph6',
+						  data: [
+							{x: '2011 Q1', y: 0},
+							{x: '2011 Q2', y: 1},
+							{x: '2011 Q3', y: 2},
+							{x: '2011 Q4', y: 3},
+							{x: '2012 Q1', y: 4},
+							{x: '2012 Q2', y: 5},
+							{x: '2012 Q3', y: 6},
+							{x: '2012 Q4', y: 7},
+							{x: '2013 Q1', y: 8}
+						  ],
+						  xkey: 'x',
+						  ykeys: ['y'],
+						  labels: ['Y'],
+						  barColors: function (row, series, type) {
+							if (type === 'bar') {
+							  var red = Math.ceil(255 * row.y / this.ymax);
+							  return 'rgb(' + red + ',0,0)';
+							}
+							else {
+							  return '#000';
+							}
+						  }
+						});
+                </script>
+            </div>
+        </div>
+        <div class="col-md-6 agile-bottom-left">
+            <div class="agile-bottom-grid">
+                <div class="area-grids-heading">
+                    <h3>Stacked Bars chart</h3>
+                </div>
+                <div id="graph5"></div>
+                <script>
+						// Use Morris.Bar
+						Morris.Bar({
+						  element: 'graph5',
+						  data: [
+							{x: '2011 Q1', y: 3, z: 2, a: 3},
+							{x: '2011 Q2', y: 2, z: null, a: 1},
+							{x: '2011 Q3', y: 0, z: 2, a: 4},
+							{x: '2011 Q4', y: 2, z: 4, a: 3}
+						  ],
+						  xkey: 'x',
+						  ykeys: ['y', 'z', 'a'],
+						  labels: ['Y', 'Z', 'A'],
+						  stacked: true
+						});
+                </script>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+    <div class="agile-last-grids">
+        <div class="col-md-4 agile-last-left">
+            <div class="agile-last-grid">
+                <div class="area-grids-heading">
+                    <h3>Daylight savings time</h3>
+                </div>
+                <div id="graph7"></div>
+                <script>
+						// This crosses a DST boundary in the UK.
+						Morris.Area({
+						  element: 'graph7',
+						  data: [
+							{x: '2013-03-30 22:00:00', y: 3, z: 3},
+							{x: '2013-03-31 00:00:00', y: 2, z: 0},
+							{x: '2013-03-31 02:00:00', y: 0, z: 2},
+							{x: '2013-03-31 04:00:00', y: 4, z: 4}
+						  ],
+						  xkey: 'x',
+						  ykeys: ['y', 'z'],
+						  labels: ['Y', 'Z']
+						});
+                </script>
+
+            </div>
+        </div>
+        <div class="col-md-4 agile-last-left agile-last-middle">
+            <div class="agile-last-grid">
+                <div class="area-grids-heading">
+                    <h3>Daylight savings time</h3>
+                </div>
+                <div id="graph8"></div>
+                <script>
+						/* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+						var day_data = [
+						  {"period": "2012-10-01", "licensed": 3407, "sorned": 660},
+						  {"period": "2012-09-30", "licensed": 3351, "sorned": 629},
+						  {"period": "2012-09-29", "licensed": 3269, "sorned": 618},
+						  {"period": "2012-09-20", "licensed": 3246, "sorned": 661},
+						  {"period": "2012-09-19", "licensed": 3257, "sorned": 667},
+						  {"period": "2012-09-18", "licensed": 3248, "sorned": 627},
+						  {"period": "2012-09-17", "licensed": 3171, "sorned": 660},
+						  {"period": "2012-09-16", "licensed": 3171, "sorned": 676},
+						  {"period": "2012-09-15", "licensed": 3201, "sorned": 656},
+						  {"period": "2012-09-10", "licensed": 3215, "sorned": 622}
+						];
+						Morris.Bar({
+						  element: 'graph8',
+						  data: day_data,
+						  xkey: 'period',
+						  ykeys: ['licensed', 'sorned'],
+						  labels: ['Licensed', 'SORN'],
+						  xLabelAngle: 60
+						});
+                </script>
+            </div>
+        </div>
+        <div class="col-md-4 agile-last-left agile-last-right">
+            <div class="agile-last-grid">
+                <div class="area-grids-heading">
+                    <h3>Daylight savings time</h3>
+                </div>
+                <div id="graph9"></div>
+                <script>
+						var day_data = [
+						  {"elapsed": "I", "value": 34},
+						  {"elapsed": "II", "value": 24},
+						  {"elapsed": "III", "value": 3},
+						  {"elapsed": "IV", "value": 12},
+						  {"elapsed": "V", "value": 13},
+						  {"elapsed": "VI", "value": 22},
+						  {"elapsed": "VII", "value": 5},
+						  {"elapsed": "VIII", "value": 26},
+						  {"elapsed": "IX", "value": 12},
+						  {"elapsed": "X", "value": 19}
+						];
+						Morris.Line({
+						  element: 'graph9',
+						  data: day_data,
+						  xkey: 'elapsed',
+						  ykeys: ['value'],
+						  labels: ['value'],
+						  parseTime: false
+						});
+                </script>
+
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+    <div class="agile-two-grids">
+        <div class="col-md-6 count">
+            <div class="count-grid">
+                <h3 class="title" id="dam">Countdown</h3>
+                <ul id="example">
+                    <li><span class="hours">00</span><p class="hours_text">Hours</p></li>
+                    <li class="seperator">:</li>
+                    <li><span class="minutes">00</span><p class="minutes_text">Minutes</p></li>
+                    <li class="seperator">:</li>
+                    <li><span class="seconds">00</span><p class="seconds_text">Seconds</p></li>
+                </ul>
+                <div class="clearfix"> </div>
+                <script type="text/javascript" src="~/adminjs/jquery.countdown.min.js"></script>
+                <script type="text/javascript">
+					$('#example').countdown({
+						date: '12/24/2020 18:59:59',
+						offset: -8,
+						day: 'Day',
+						days: 'Days'
+					}, function () {
+						alert('Done!');
+					});
+                </script>
+            </div>
+        </div>
+        <div class="col-md-6 weather">
+            <div class="weather-right">
+                <div class="weather-heading">
+                    <h3>Weather Report</h3>
+                </div>
+                <ul>
+                    <li>
+                        <figure class="icons">
+                            <canvas id="partly-cloudy-day" width="60" height="60"></canvas>
+                        </figure>
+                        <h3>25 °C</h3>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <figure class="icons">
+                            <canvas id="clear-day" width="40" height="40"></canvas>
+                        </figure>
+                        <div class="weather-text">
+                            <h4>WED</h4>
+                            <h5>27 °C</h5>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <figure class="icons">
+                            <canvas id="snow" width="40" height="40"></canvas>
+                        </figure>
+                        <div class="weather-text">
+                            <h4>THR</h4>
+                            <h5>13 °C</h5>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <figure class="icons">
+                            <canvas id="partly-cloudy-night" width="40" height="40"></canvas>
+                        </figure>
+                        <div class="weather-text">
+                            <h4>FRI</h4>
+                            <h5>18 °C</h5>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <figure class="icons">
+                            <canvas id="cloudy" width="40" height="40"></canvas>
+                        </figure>
+                        <div class="weather-text">
+                            <h4>SAT</h4>
+                            <h5>15 °C</h5>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <figure class="icons">
+                            <canvas id="fog" width="40" height="40"></canvas>
+                        </figure>
+                        <div class="weather-text">
+                            <h4>SUN</h4>
+                            <h5>11 °C</h5>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                </ul>
+                <script>
+					var icons = new Skycons({"color": "#fcb216"}),
+						list  = [
+						"partly-cloudy-day"
+						],
+						i;
+
+					for(i = list.length; i--; )
+					icons.set(list[i], list[i]);
+					icons.play();
+                </script>
+                <script>
+					var icons = new Skycons({"color": "#000"}),
+						list  = [
+						"clear-night","partly-cloudy-night", "cloudy", "clear-day", "sleet", "snow", "wind","fog"
+						],
+						i;
+					for(i = list.length; i--; )
+					icons.set(list[i], list[i]);
+					icons.play();
+                </script>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+@*<script src="js/bootstrap.js"></script>
+<script src="js/proton.js"></script>*@
+
+<script src="~/adminjs/bootstrap.js"></script>
+<script src="~/adminjs/proton.js"></script>
+
+ @*@foreach (var ctt in ctts)
+                        {
+                            var c = pplvote.Where(dbl => dbl.contestantId == ctt.Id).Count();//number
+                            var d = (Convert.ToDouble(c) / Convert.ToDouble(pplvotecount)) * 100;//percentage
+                            var e = ctt.fullname;
+                            return "{value: " + c + ", label: '" + e + "', formatted: 'about " + d.ToString("###.00") + "%' },";
+                            //dayta += string.Format("{0},{1},{2}&", c, e, d);
+                        }*@
+                            //[
+                                
+                            //{ "value": 30, "label": "Aa", "formatted": "aa" },
+                            //{ 'value': 20, 'label': 'Ba', 'formatted': 'ba' },
+                            //{ 'value': 10, 'label': 'Ca', 'formatted': 'ca' },
+                            //{ 'value': 40, 'label': 'Da', 'formatted': 'da' },
+                            //]
+
+							//alert(sp.value);
+                    //function cl(val, lab, format) {
+                    //    this.value = val;
+                    //    this.label = lab;
+                    //    this.formatted = format;
+                    //}
+                    //var overall = []
+                    
+                    //var allString = document.getElementById("sp").value;
+                    //alert(allString);
+                    //var sp = allString.split('&');
+
+                    //for (var s in sp) {
+                    //    if (s.length > 0) {
+                    //        var dt = s.split(',');
+
+                    //        alert(s[1]);
+
+                    //        overall.push({
+                    //            value: parseInt(dt[0]),
+                    //            label: dt[1],
+                    //            formatted: dt[2]
+                    //        });
+                    //    }
+                    //}
+                    
+                    //for (var d in overall) {
+                    //    alert(d.value)
+                    //}
+
+					@*<span>@dayta</span>*@
+
+					@{
+                    //dayta.ToString();
+                    //JObject json = JObject.Parse(dayta.ToString());
+                };
+                @*@{
+                    dayta = dayta.Remove(dayta.Length - 1);
+                    var trythis = @"[ 
+                            { 'value': 30, 'label': 'Aa', 'formatted': 'aa' },
+                            { 'value': 20, 'label': 'Ba', 'formatted': 'ba' },
+                            { 'value': 10, 'label': 'Ca', 'formatted': 'ca' },
+                            { 'value': 40, 'label': 'Da', 'formatted': 'da' },
+                            ] ";
+                    //JObject json = JObject.Parse(trythis);
+                    dayta.Remove(dayta.Length - 1);
+                }*@
+				                    dayta[ct] = new contestantpie
+                    {
+                        value = c,
+                        label = e,
+                        formatted = "about " + d.ToString("###.00") + "%"
+                    };
+                    //dayta += string.Format("{0},{1},{2}&", c, e, d);
+					<div class="col-md-4 charts-right">
+            <!-- area-chart -->
+            <div class="area-grids">
+                <div class="area-grids-heading">
+                    <h3>Area charts</h3>
+                </div>
+                @*<div id="graph4"></div>
+                
+                <input type="text" value="@dayta" id="sp" hidden />
+                <script>
+                    Morris.Donut
+                    ({
+                        element: 'graph4',
+                        data: [@dayta]
+                        ,
+					    formatter: function (x, data) { return data.formatted; }
+                    });
+                </script>*@
+                @*@{
+                    contestantpie[] b = new contestantpie[cttscount];
+                    var w = "weed";
+                    int n = 0;
+                    //var dayta = "";
+
+                    foreach (var ctt in ctts)
+                    {
+                        var c = pplvote.Where(dbl => dbl.contestantId == ctt.Id).Count();//number
+                        string d = ((Convert.ToDouble(c) / Convert.ToDouble(pplvotecount)) * 100).ToString("###.0");//percentage
+                        string e = ctt.fullname;//fullname
+
+                        //dayta += "{value: " + c + ", label: \'hello\', formatted: world },";
+                        //dayta += @"['"+e+"',"+c.ToString()+"],";
+
+                        b[n] = new contestantpie();
+                        b[n].value = c;
+                        b[n].label = e;
+                        n++;
+                    }*@
+                    //dayta = dayta.Remove(dayta.Length - 1);
+                    //dayta += "";
+                }
+                @*<input type="text" value="@w" id="sp" hidden />
+                <div id="piechart"></div>
+                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                <script type="text/javascript">
+                // Load google charts
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+                // Draw the chart and set the chart values
+                function drawChart() {
+                  var data = google.visualization.arrayToDataTable([
+                  ['Task', 'Hours per Day'],
+                  [@b[0].label, @b[0].value],
+                  [@b[1].label, @b[1].value],
+                  [@b[2].label, @b[2].value],
+                  [@b[3].label, @b[3].value],
+                ]);
+                  // Optional; add a title and set the width and height of the chart
+                  var options = {'title':'My Average Day', 'width':'550', 'height':'400'};
+
+                  // Display the chart inside the <div> element with id="piechart"
+                  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                  chart.draw(data, options);
+                }
+                </script>*@
+            </div>
+            <!-- //area-chart -->
+        </div>
+		@*
+        @foreach (var item in db.EligibleMembers)
+        {*@
+            
+            @*@for (var i = 1; i <= 4; i++)
+            {*@
+                
+            @*//}*@
+            @*@if (counter % 4 == 3)
+            {
+                <div class="clearfix"> </div>
+                </div>
+            }
+            counter++;*@
+        @*}*@
+
+        @*<div class="show-reel">
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/Admin/GetFile/10" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/Admin/GetFile/10" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/adminimages/g2.jpg" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/adminimages/g2.jpg" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/adminimages/g3.jpg" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/adminimages/g3.jpg" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/adminimages/g4.jpg" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/adminimages/g4.jpg" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>*@
+
+        @*<div class="show-reel">
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/adminimages/g5.jpg" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/adminimages/g5.jpg" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/adminimages/g6.jpg" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/adminimages/g6.jpg" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/adminimages/g1.jpg" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/adminimages/g1.jpg" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/adminimages/g2.jpg" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/adminimages/g2.jpg" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/adminimages/g2.jpg" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/adminimages/g2.jpg" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>*@
+
+        @*<div class="show-reel">
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/adminimages/g3.jpg" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/adminimages/g3.jpg" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/adminimages/g4.jpg" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/adminimages/g4.jpg" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/adminimages/g5.jpg" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/adminimages/g5.jpg" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 agile-gallery-grid">
+                <div class="agile-gallery">
+                    <a href="~/adminimages/g6.jpg" class="lsb-preview" data-lsb-group="header">
+                        <img src="~/adminimages/g6.jpg" />
+                        <div class="agileits-caption">
+                            <h4>Consectetur</h4>
+                            <p>Sed ultricies non sem sit amet laoreet. Ut semper erat erat.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>*@
+		@*<style>
+    a.tooltip {
+        outline: none;
+    }
+
+        a.tooltip strong {
+            line-height: 0;
+        }
+
+        a.tooltip:hover {
+            text-decoration: none;
+        }
+
+        a.tooltip span {
+            z-index: 10;
+            display: none;
+            padding: 14px 20px;
+            margin-top: 60px;
+            margin-left: -160px;
+            width: 300px;
+            line-height: 16px;
+        }
+
+        a.tooltip:hover span {
+            display: inline;
+            position: absolute;
+            border: 2px solid #FFF;
+            color: #EEE;
+            background: #333 url(http://www.menucool.com/tooltip/cssttp/css-tooltip-gradient-bg.png) repeat-x 0 0;
+        }
+
+    .callout {
+        z-index: 20;
+        position: absolute;
+        border: 0;
+        top: -14px;
+        left: 120px;
+    }
+
+    /*CSS3 extras*/
+    a.tooltip span {
+        border-radius: 2px;
+        box-shadow: 0px 0px 8px 4px #666;
+        /*opacity: 0.8;*/
+    }
+</style>
+
+<a href="#" class="tooltip" style="margin:300px;">
+    <img src="http://www.menucool.com/tooltip/cssttp/css-tooltip-image.gif" />
+    <span>
+        <img class="callout" src="http://www.menucool.com/tooltip/cssttp/callout_black.gif" />
+        <img src="http://www.menucool.com/tooltip/cssttp/css3-tooltip-image.png" style="float:right;" />
+        <strong>CSS only Tooltip</strong><br />
+        Pure CSS popup tooltips with clean semantic XHTML.
+    </span>
+</a>*@
+    
+    @*<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
+    <div id="content">
+    </div>
+
+    <script>
+	$(document).ready(function() {
+	   $("#content").html('<a id="riverroad" href="#" title="" >image of 1 Maple St.</a>');
+	   $("#content #riverroad").tooltip({ content: '<img src="http://icdn.pro/images/fr/a/v/avatar-barbe-brun-homme-utilisateur-icone-9665-128.png" />' });
+
+	});
+    </script>*@
+	<!--<link href="bootstrap.min.css" rel="stylesheet" />
+<link href="dataTables.bootstrap.min.css" rel="stylesheet" />-->
+@*<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>*@
+			            @*~/testimages/bandmember.jpg*@
+            @*<div class="row">
+                <div class="col-sm-4">
+                    <p class="text-center"><strong>Name</strong></p><br>
+                    <a href="#demo" data-toggle="collapse">
+                        <img src="~/testimages/bandmember.jpg" class="img-circle person" alt="Random Name" width="255" height="255">
+
+                    </a>
+                    <div id="demo" class="collapse">
+                        <p>Guitarist and Lead Vocalist</p>
+                        <p>Loves long walks on the beach</p>
+                        <p>Member since 1988</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <p class="text-center"><strong>Name</strong></p><br>
+                    <a href="#demo2" data-toggle="collapse">
+                        <img src="~/testimages/bandmember.jpg" class="img-circle person" alt="Random Name" width="255" height="255">
+                    </a>
+                    <div id="demo2" class="collapse">
+                        <p>Drummer</p>
+                        <p>Loves drummin'</p>
+                        <p>Member since 1988</p>
+                    </div>
+                </div>
+            </div>*@
+			<!-- Add Google Maps -->
+        @*<div id="googleMap"></div>
+                <script>
+            function myMap() {
+            var myCenter = new google.maps.LatLng(41.878114, -87.629798);
+            var mapProp = {center:myCenter, zoom:12, scrollwheel:false, draggable:false, mapTypeId:google.maps.MapTypeId.ROADMAP};
+            var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+            var marker = new google.maps.Marker({position:myCenter});
+            marker.setMap(map);
+            }
+                </script>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU&callback=myMap"></script>*@
+        <!--
+        To use this code on your website, get a free API key from Google.
+        Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
+        -->
+		@*<div class="col-sm-4">
+                            <div class="thumbnail">
+                                <img src="~/testimages/newyork.jpg" alt="New York" width="400" height="300">
+                                <p><strong>New York</strong></p>
+                                <p>Saturday 28 November 2015</p>
+                                <button class="btn" data-toggle="modal" data-target="#myModal">Buy Tickets</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="thumbnail">
+                                <img src="~/testimages/sanfran.jpg" alt="San Francisco" width="400" height="300">
+                                <p><strong>San Francisco</strong></p>
+                                <p>Sunday 29 November 2015</p>
+                                <button class="btn" data-toggle="modal" data-target="#myModal">Buy Tickets</button>
+                            </div>
+                        </div>*@
+
+/// <reference path="../adminjs/bootstrap.js" />
+/// <reference path="../adminjs/gmaps.js" />
+/// <reference path="../adminjs/graph.js" />
+/// <reference path="../adminjs/jquery.basictable.min.js" />
+/// <reference path="../adminjs/jquery.cookie.js" />
+/// <reference path="../adminjs/jquery.countdown.min.js" />
+/// <reference path="../adminjs/jquery.geocomplete.js" />
+/// <reference path="../adminjs/jquery.min.js" />
+/// <reference path="../adminjs/jquery.vmap.js" />
+/// <reference path="../adminjs/jquery.vmap.sampledata.js" />
+/// <reference path="../adminjs/jquery.vmap.world.js" />
+/// <reference path="../adminjs/jquery1.9.1.min.js" />
+/// <reference path="../adminjs/jquery2.0.3.min.js" />
+/// <reference path="../adminjs/jquery-ui.min.js" />
+/// <reference path="../adminjs/logger.js" />
+/// <reference path="../adminjs/lsb.js" />
+/// <reference path="../adminjs/modernizr.js" />
+/// <reference path="../adminjs/monthly.js" />
+/// <reference path="../adminjs/morris.js" />
+/// <reference path="../adminjs/proton.js" />
+/// <reference path="../adminjs/raphael-min.js" />
+/// <reference path="../adminjs/screenfull.js" />
+/// <reference path="../adminjs/skycons.js" />
+/// <reference path="../adminjs/valida.2.1.6.min.js" />
+/// <reference path="../adminjs/validator.min.js" />
+/// <reference path="../choosejs/jquery.magnific-popup.js" />
+/// <reference path="../choosejs/jquery.min.js" />
+/// <reference path="../datatablejs/datatables.bootstrap.min.js" />
+/// <reference path="../datatablejs/jquery.datatables.min.js" />
+/// <reference path="../datatablejs/jquery-1.12.4.js" />
+/// <reference path="bootstrap.js" />
+/// <reference path="jquery.validate.js" />
+/// <reference path="jquery.validate.unobtrusive.js" />
+/// <reference path="jquery-1.10.2.js" />
+/// <reference path="modernizr-2.6.2.js" />
+/// <reference path="respond.js" />

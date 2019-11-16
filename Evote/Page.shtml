@@ -1,0 +1,12 @@
+﻿<html>
+<head>
+    <title>testing SSI</title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <h1>SSI TEST STARTS!!</h1>
+    <!--#include virtual="navigation.ssi" -->
+    <!--#include virtual="welcome.txt" -->
+    <h4>SSI TEST ENDS!!</h4>
+</body>
+</html>

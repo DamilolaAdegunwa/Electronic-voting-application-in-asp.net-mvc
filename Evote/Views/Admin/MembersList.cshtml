@@ -1,0 +1,189 @@
+﻿@{
+    ViewBag.Title = "MembersList";
+    hrEntities db = new hrEntities();
+}
+<!--<link href="bootstrap.min.css" rel="stylesheet" />
+<link href="dataTables.bootstrap.min.css" rel="stylesheet" />-->
+<link href="~/dataTablecss/bootstrap.min.css" rel="stylesheet" />
+<link href="~/dataTablecss/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<div class="agile-grids" style="min-height:100vh">
+        <!-- Members-page -->
+    <div class="progressbar-heading grids-heading">
+        <h2>Members List</h2>
+    </div>
+    <div class="banner">
+        <h2>
+            <a href="@Url.Action("Dashboard", "Admin")">Admin</a>
+            <i class="fa fa-angle-right"></i>
+            <span><a href="@Url.Action("MembersList", "Admin")">MembersList</a></span>
+        </h2>
+    </div>
+    Contestants
+    <table id="example1" class="table table-striped table-bordered table-hover table-responsive" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>Fullname</th>
+                <th>Phone Number</th>
+                <th>Membership Number</th>
+                <th>Email</th>
+                <th>Post</th>
+                @*<th></th>
+                <th></th>*@
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>S/N</th>
+                <th>Fullname</th>
+                <th>Phone Number</th>
+                <th>Membership Number</th>
+                <th>Email</th>
+                <th>Post</th>
+                @*<th></th>
+                <th></th>*@
+            </tr>
+        </tfoot>
+        <tbody>
+            @{ var a = 1;}
+            @foreach (var item in db.Contestants)
+            {
+                <tr>
+                    <td>@a</td>
+                    <td>@item.EligibleMember.fullname</td>
+                    <td>@item.EligibleMember.phone_number</td>
+                    <td>@item.EligibleMember.membership_number</td>
+                    <td>@item.EligibleMember.email</td>
+                    <td>@item.VotingSession.Position.Post</td>
+                    @*<td><a href="@Url.Action("Profile4Contestants", "Admin", new { Id = item.Id })"><div class="btn btn-sm btn-primary btn-block">Show details</div></a></td>
+                    <td><a href="@Url.Action("EditContestants", "Admin", new { Id = item.Id })"><div class="btn btn-sm btn-warning btn-block">Edit content</div></a></td>*@
+                </tr>
+                a++;
+            }
+        </tbody>
+    </table>
+    Committee Members
+    <table id="example2" class="table table-striped table-bordered table-hover table-responsive" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>Fullname</th>
+                <th>Phone Number</th>
+                <th>Membership Number</th>
+                <th>Committee Membership Number</th>
+                <th>Email</th>
+                @*<th></th>
+                <th></th>*@
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>S/N</th>
+                <th>Fullname</th>
+                <th>Phone Number</th>
+                <th>Membership Number</th>
+                <th>Committee Membership Number</th>
+                <th>Email</th>
+                @*<th></th>
+                <th></th>*@
+            </tr>
+        </tfoot>
+        <tbody>
+            @{ var b = 1;}
+            @foreach (var item in db.Committee_member)
+            {
+                <tr>
+                    <td>@b</td>
+                    <td>@item.EligibleMember.fullname</td>
+                    <td>@item.EligibleMember.phone_number</td>
+                    <td>@item.EligibleMember.membership_number</td>
+                    <td>@item.cmvn</td>
+                    <td>@item.EligibleMember.email</td>
+                    @*<td><a href="@Url.Action("Profile4CommitteeMembers", "Admin", new { Id = item.Id })"><div class="btn btn-sm btn-primary btn-block">Show details</div></a></td>
+                    <td><a href="@Url.Action("EditCommitteeMember", "Admin", new { Id = item.Id })"><div class="btn btn-sm btn-warning btn-block">Edit content</div></a></td>*@
+                </tr>
+                b++;
+            }
+        </tbody>
+    </table>
+    Eligible Members
+    <table id="example3" class="table table-striped table-bordered table-hover table-responsive" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>Fullname</th>
+                <th>Phone Number</th>
+                <th>Membership Number</th>
+                <th>Email</th>
+                @*<th></th>
+                <th></th>*@
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>S/N</th>
+                <th>Fullname</th>
+                <th>Phone Number</th>
+                <th>Membership Number</th>
+                <th>Email</th>
+                @*<th></th>
+                <th></th>*@
+            </tr>
+        </tfoot>
+        <tbody>
+            @{ var c = 1;}
+            @foreach (var item in db.EligibleMembers)
+            {
+                <tr>
+                    <td>@c</td>
+                    <td>@item.fullname</td>
+                    <td>@item.phone_number</td>
+                    <td>@item.membership_number</td>
+                    <td>@item.email</td>
+                    @*<td><a href="@Url.Action("Profile4EligibleMembers", "Admin", new { Id = item.Id })"><div class="btn btn-sm btn-primary btn-block">Show details</div></a></td>
+                    <td><a href="@Url.Action("EditEligibleMember", "Admin", new { Id = item.Id })"><div class="btn btn-sm btn-warning btn-block">Edit content</div></a></td>*@
+                </tr>
+                c++;
+            }
+        </tbody>
+    </table>
+    <div class="tool-tips widget-shadow">
+        <h4 class="title2">See Also :</h4>
+        <div class="bs-example-tooltips" style="width:100%;">
+            <div class="col-md-3">
+                <a class="btn btn-lg btn-success" style="width:80%;text-align:center;font-size:0.8em;" href="@Url.Action("EligibleMembersList", "Admin")" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="View a list of all eligible members">Eligible Members</a>
+            </div>
+            <div class="col-md-3">
+                <a class="btn btn-lg btn-info" style="width:80%;text-align:center;font-size:0.8em;" href="@Url.Action("CommitteeMembersList", "Admin")" data-toggle="tooltip" data-placement="top" title="" data-original-title="A list of all the various committee members">Committee Members</a>
+            </div>
+            <div class="col-md-3">
+                <a class="btn btn-lg btn-warning" style="width:80%;text-align:center;font-size:0.8em;" href="@Url.Action("ContestantsList", "Admin")" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="You can see the list of contestants">Contestants</a>
+            </div>
+            <div class="col-md-3">
+                <a class="btn btn-lg btn-danger" style="width:80%;text-align:center;font-size:0.8em;" href="@Url.Action("MembersList", "Admin")" data-toggle="tooltip" data-placement="top" title="" data-original-title="A combination of everybody in the various lists">All Members</a>
+            </div>
+            <script>
+                $(function () {
+					$('[data-toggle="tooltip"]').tooltip()
+				})</script>
+        </div>
+    </div>
+    <!--<script src="jquery-1.12.4.js"></script>
+    <script src="jquery.dataTables.min.js"></script>
+    <script src="dataTables.bootstrap.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/dataTablejs/jquery-1.12.4.js"></script>
+    <script src="~/dataTablejs/jquery.dataTables.min.js"></script>
+    <script src="~/dataTablejs/dataTables.bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#example1').DataTable();
+        $('#example2').DataTable();
+        $('#example3').DataTable();
+    } );
+    </script>
+</div>

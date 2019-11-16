@@ -1,0 +1,617 @@
+﻿@using Evote.Models
+@using Newtonsoft.Json.Linq;
+@{
+    ViewBag.Title = "Report";
+    hrEntities db = new hrEntities();
+    int Id = Convert.ToInt32(ViewBag.Id);
+    var pvotingsession = db.VotingSessions.Where(dbl => dbl.Id == Id).First();
+
+    var decValue = 500;
+    string hexValue = decValue.ToString("X");
+    var hex = string.Format("{0:x}", decValue);
+
+    var hexValue2 = "fff";
+    int decValue2 = int.Parse(hexValue2, System.Globalization.NumberStyles.HexNumber);
+    int decValue3 = Convert.ToInt32(hexValue2, 16);
+
+    var pplvote = db.voteLogs.Where(dbl => dbl.VotingSessionId == Id); //people who voted in a particular session
+    var ctts = db.Contestants.Where(dbl => dbl.PositionId == pvotingsession.PositionId); //contestants for that vote session
+
+    var pplvotecount = pplvote.Count();//number of ppl who voted
+    var cttscount = ctts.Count();//number of contestants
+
+    var listctt = new contestantpie();
+    //var cttarray = new 
+    foreach (var ctt in ctts)
+    {
+        var c = pplvote.Where(dbl => dbl.contestantId == ctt.Id).Count();//number
+        var d = (Convert.ToDouble(c) / Convert.ToDouble(pplvotecount)) * 100;//percentage
+        var e = ctt.fullname;
+    }
+    var cstr = pvotingsession.closeDate.Value.Date.ToShortDateString() + " " +pvotingsession.closeTime.ToString();
+    DateTime cdate = Convert.ToDateTime(cstr);
+    var diff = cdate - DateTime.Now;
+    var diffday = diff.Days;
+}
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- bootstrap-css -->
+@*<link rel="stylesheet" href="css/bootstrap.css">*@
+<link href="~/admincss/bootstrap.css" rel="stylesheet" />
+<!-- //bootstrap-css -->
+<!-- Custom CSS -->
+@*<link href="css/style.css" rel='stylesheet' type='text/css' />*@
+<link href="~/admincss/style.css" rel="stylesheet" />
+<!-- font CSS -->
+<link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<!-- font-awesome icons -->
+@*<link rel="stylesheet" href="css/font.css" type="text/css" />
+<link href="css/font-awesome.css" rel="stylesheet">*@
+
+<link href="~/admincss/font.css" rel="stylesheet" />
+<link href="~/admincss/font-awesome.css" rel="stylesheet" />
+<!-- //font-awesome icons -->
+@*<script src="js/jquery2.0.3.min.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/screenfull.js"></script>*@
+
+<script src="~/adminjs/jquery2.0.3.min.js"></script>
+<script src="~/adminjs/modernizr.js"></script>
+<script src="~/adminjs/jquery.cookie.js"></script>
+<script src="~/adminjs/screenfull.js"></script>
+<script>
+	$(function () {
+		$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
+		if (!screenfull.enabled) {
+			return false;
+		}
+		$('#toggle').click(function () {
+			screenfull.toggle($('#container')[0]);
+		});
+	});
+</script>
+<!-- charts -->
+@*<script src="js/raphael-min.js"></script>
+<script src="js/morris.js"></script>
+<link rel="stylesheet" href="css/morris.css">*@
+
+<script src="~/adminjs/raphael-min.js"></script>
+<script src="~/adminjs/morris.js"></script>
+<link href="~/admincss/morris.css" rel="stylesheet" />
+<!-- //charts -->
+<!--skycons-icons-->
+<script src="~/adminjs/skycons.js"></script>
+<!--//skycons-icons-->
+<!-- tables -->
+<link href="~/admincss/table-style.css" rel="stylesheet" />
+<link href="~/admincss/basictable.css" rel="stylesheet" />
+<script src="~/adminjs/jquery.basictable.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+      $('#table').basictable();
+
+      $('#table-breakpoint').basictable({
+        breakpoint: 768
+      });
+
+      $('#table-swap-axis').basictable({
+        swapAxis: true
+      });
+
+      $('#table-force-off').basictable({
+        forceResponsive: false
+      });
+
+      $('#table-no-resize').basictable({
+        noResize: true
+      });
+
+      $('#table-two-axis').basictable();
+
+      $('#table-max-height').basictable({
+        tableWrapper: true
+      });
+    });
+</script>
+<!-- //tables -->
+<div class="main-grid" style="width:100%;margin:1px;padding:1px">
+    <div class="progressbar-heading grids-heading">
+        <h2 style="margin-bottom:1px;">Report</h2>
+    </div>
+    <div class="banner">
+        <h2>
+            <a href="@Url.Action("Report", "Admin", new { Id = ViewBag.Id })">Report</a>
+            <i class="fa fa-angle-right"></i>
+            <span> Report </span>
+        </h2>
+    </div>
+    <div class="agile-two-grids">
+        <div class="col-md-6 count">
+            <div class="count-grid">
+                <h3 class="title" id="dam">Countdown</h3>
+                <ul id="example">
+                    <li><span class="days">@diffday</span><p class="days_text">Days</p></li>
+                    <li class="seperator">:</li>
+                    <li><span class="hours">00</span><p class="hours_text">Hours</p></li>
+                    <li class="seperator">:</li>
+                    <li><span class="minutes">00</span><p class="minutes_text">Minutes</p></li>
+                    <li class="seperator">:</li>
+                    <li><span class="seconds">00</span><p class="seconds_text">Seconds</p></li>
+                </ul>
+                <div class="clearfix"> </div>
+                <script type="text/javascript" src="~/adminjs/jquery.countdown.min.js"></script>
+                <script type="text/javascript">
+                        $('#example').countdown({
+                            date: '@pvotingsession.closeDate.Value.Date.ToShortDateString() @pvotingsession.closeTime',
+                            offset: 1,
+                            day: 'Day',
+                            days: 'Days'
+                        }, function () {
+                            alert('Done!');
+                        });
+                </script>
+            </div>
+        </div>
+        <div class="col-md-6 weather">
+            <div class="weather-right">
+                <div class="weather-heading">
+                    <h3>Weather Report</h3>
+                </div>
+                <ul>
+                    <li>
+                        <figure class="icons">
+                            <canvas id="partly-cloudy-day" width="60" height="60"></canvas>
+                        </figure>
+                        <h3>25 °C</h3>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <figure class="icons">
+                            <canvas id="clear-day" width="40" height="40"></canvas>
+                        </figure>
+                        <div class="weather-text">
+                            <h4>WED</h4>
+                            <h5>27 °C</h5>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <figure class="icons">
+                            <canvas id="snow" width="40" height="40"></canvas>
+                        </figure>
+                        <div class="weather-text">
+                            <h4>THR</h4>
+                            <h5>13 °C</h5>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <figure class="icons">
+                            <canvas id="partly-cloudy-night" width="40" height="40"></canvas>
+                        </figure>
+                        <div class="weather-text">
+                            <h4>FRI</h4>
+                            <h5>18 °C</h5>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <figure class="icons">
+                            <canvas id="cloudy" width="40" height="40"></canvas>
+                        </figure>
+                        <div class="weather-text">
+                            <h4>SAT</h4>
+                            <h5>15 °C</h5>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                    <li>
+                        <figure class="icons">
+                            <canvas id="fog" width="40" height="40"></canvas>
+                        </figure>
+                        <div class="weather-text">
+                            <h4>SUN</h4>
+                            <h5>11 °C</h5>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                </ul>
+                <script>
+                        var icons = new Skycons({"color": "#fcb216"}),
+                            list  = [
+                            "partly-cloudy-day"
+                            ],
+                            i;
+
+                        for(i = list.length; i--; )
+                            icons.set(list[i], list[i]);
+                        icons.play();
+                </script>
+                <script>
+                        var icons = new Skycons({"color": "#000"}),
+                            list  = [
+                            "clear-night","partly-cloudy-night", "cloudy", "clear-day", "sleet", "snow", "wind","fog"
+                            ],
+                            i;
+                        for(i = list.length; i--; )
+                            icons.set(list[i], list[i]);
+                        icons.play();
+                </script>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+    <div class="social grid">
+        <div class="grid-info">
+            <div class="col-md-3">
+                <div class="comments likes">
+                    <div class="comments-icon">
+                    </div>
+                    <div class="comments-info likes-info">
+                        <h4 style="color:#ffffff;">Start Date</h4>
+                        <br/>
+                        <h6 style="color:#ffffff;">@pvotingsession.startDate.Value.Date.ToLongDateString()</h6>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="comments">
+                    <div class="comments-icon">
+                    </div>
+                    <div class="comments-info">
+                        <h4 style="color:#ffffff;">Close Date</h4>
+                        <br/>
+                        <h6 style="color:#ffffff;">@pvotingsession.closeDate.Value.Date.ToLongDateString()</h6>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="comments tweets">
+                    <div class="comments-icon">
+                    </div>
+                    <div class="comments-info tweets-info">
+                        <h4 style="color:#ffffff;">Number of Contestants</h4>
+                        <br/>
+                        <h6 style="color:#ffffff;">@db.Contestants.Where(dbl => dbl.PositionId == pvotingsession.PositionId).Count()</h6>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <div class="col-md-3" style="">
+                <div class="comments views">
+                    <div class="comments-icon">
+                    </div>
+                    <div class="comments-info views-info">
+                        <h4 style="color:#ffffff;">Number of Voters</h4>
+                        <br/>
+                        <h6 style="color:#ffffff;">@db.voteLogs.Where(dbl => dbl.VotingSessionId == Id).Count()</h6>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+
+    <div class="agile-grids">
+        <div class="col-md-4 charts-right">
+            <!-- area-chart -->
+            <div class="area-grids">
+                <div class="area-grids-heading">
+                    <h3>Area charts</h3>
+                </div>
+                @{ 
+                    int s;
+                    string[] ss = new string[3];
+                    //var t = int.TryParse(ss[4].ToString(), out s);
+                    contestantpie[] areachart = new contestantpie[20];
+                    areachart[0] = new contestantpie();
+                    areachart[1] = new contestantpie();
+                    areachart[2] = new contestantpie();
+                    areachart[3] = new contestantpie();
+                    areachart[4] = new contestantpie();
+                    areachart[5] = new contestantpie();
+                    areachart[6] = new contestantpie();
+                    areachart[7] = new contestantpie();
+                    areachart[8] = new contestantpie();
+                    areachart[9] = new contestantpie();
+                    areachart[10] = new contestantpie();
+                    areachart[11] = new contestantpie();
+                    var n = 0;
+                    foreach (var ctt in ctts)
+                    {
+                        var c = pplvote.Where(dbl => dbl.contestantId == ctt.Id).Count();//number
+                        string d = ctt.fullname;//fullname
+                        string e = ((Convert.ToDouble(c) / Convert.ToDouble(pplvotecount)) * 100).ToString("###.0");//percentage
+
+                        //areachart[n] = new contestantpie();
+                        areachart[n].value = c;
+                        areachart[n].label = d;
+                        areachart[n].formatted = e;
+                        n++;
+                    }
+                }
+                <span></span>
+                <div id="graph4"></div>
+                <script>
+					Morris.Donut({
+						element: 'graph4',
+						data: [
+						{ value: @areachart[0].value, label: '@areachart[0].label', formatted: '@areachart[0].formatted%' },
+						{ value: @areachart[1].value, label: '@areachart[1].label', formatted: '@areachart[1].formatted%' },
+                        { value: @areachart[2].value, label: '@areachart[2].label', formatted: '@areachart[2].formatted%' },
+                        { value: @areachart[3].value, label: '@areachart[3].label', formatted: '@areachart[3].formatted%' },
+                        { value: @areachart[4].value, label: '@areachart[4].label', formatted: '@areachart[4].formatted%' },
+                        { value: @areachart[5].value, label: '@areachart[5].label', formatted: '@areachart[5].formatted%' },
+                        { value: @areachart[6].value, label: '@areachart[6].label', formatted: '@areachart[6].formatted%' },
+						{ value: @areachart[7].value, label: '@areachart[7].label', formatted: '@areachart[7].formatted%' },
+                        { value: @areachart[8].value, label: '@areachart[8].label', formatted: '@areachart[8].formatted%' },
+                        { value: @areachart[9].value, label: '@areachart[9].label', formatted: '@areachart[9].formatted%' },
+                        { value: @areachart[10].value, label: '@areachart[10].label', formatted: '@areachart[10].formatted%' },
+                        { value: @areachart[11].value, label: '@areachart[11].label', formatted: '@areachart[11].formatted%' },
+                        @*{ value: @areachart[4].value == null ? 0 : @areachart[4].value, label: @areachart[4] == null ? '' : '@areachart[4].label', formatted: @areachart[4] == null ? '' : '@areachart[4].formatted' },*@
+
+						],
+						formatter: function (x, data) { return data.formatted; }
+					});
+                </script>
+
+            </div>
+            <!-- //area-chart -->
+        </div>
+        <div class="col-md-8 chart-left">
+            <!-- updating-data -->
+            <div class="agile-Updating-grids">
+                <div class="area-grids-heading">
+                    <h3>Updating data</h3>
+                </div>
+                <div id="graph1"></div>
+                <script>
+						//var nReloads = 0;
+						//function data(offset) {
+						//  var ret = [];
+						//  for (var x = 0; x <= 360; x += 10) {
+						//	var v = (offset + x) % 360;
+						//	ret.push({
+						//	  x: x,
+						//	  y: Math.sin(Math.PI * v / 180).toFixed(4),
+						//	  z: Math.cos(Math.PI * v / 180).toFixed(4)
+						//	});
+						//  }
+						//  return ret;
+						//}
+						var graph = Morris.Line({
+							element: 'graph1',
+							data: [
+							{x: 0,y: Math.sin(Math.PI * 0 / 180).toFixed(4),z: Math.cos(Math.PI * 0 / 180).toFixed(4)},
+                            {x: 60,y: Math.sin(Math.PI * 60 / 180).toFixed(4),z: Math.cos(Math.PI * 60 / 180).toFixed(4)},
+                            {x: 120,y: Math.sin(Math.PI * 120 / 180).toFixed(4),z: Math.cos(Math.PI * 120 / 180).toFixed(4)},
+                            {x: 180,y: Math.sin(Math.PI * 180 / 180).toFixed(4),z: Math.cos(Math.PI * 180 / 180).toFixed(4)},
+                            {x: 240,y: Math.sin(Math.PI * 240 / 180).toFixed(4),z: Math.cos(Math.PI * 240 / 180).toFixed(4)},
+                            {x: 360,y: Math.sin(Math.PI * 360 / 180).toFixed(4),z: Math.cos(Math.PI * 360 / 180).toFixed(4)},
+							],//data(0),
+							xkey: 'x',
+							ykeys: ['y', 'z'],
+							labels: ['sin()', 'cos()'],
+							parseTime: false,
+							ymin: -1.0,
+							ymax: 1.0,
+							hideHover: true
+						});
+						//function update() {
+						//  nReloads++;
+						//  graph.setData(data(5 * nReloads));
+						//  $('#reloadStatus').text(nReloads + ' reloads');
+						//}
+						//setInterval(update, 100);
+                </script>
+
+            </div>
+            <!-- //updating-data -->
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="agile-grids" style="width:100%;margin-right:0">
+        <div class="col-md-12 charts-right">
+            <!-- area-chart -->
+            <div class="area-grids">
+                <div class="area-grids-heading">
+                    <h3>Contestants Table</h3>
+                </div>
+                @*<h3>Two Axis Styling</h3>*@
+                <table id="table-two-axis" class="two-axis">
+                    <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>FULL NAME</th>
+                            <th>MEMBERSHIP NUMBER</th>
+                            <th>NUMBER OF VOTES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int countingrow = 1;
+                        }
+                        @foreach (var ctt in ctts)
+                        {
+                            var c = pplvote.Where(dbl => dbl.contestantId == ctt.Id).Count();//number
+                            string d = ctt.fullname;//fullname
+                            <tr>
+                                <td>@countingrow</td>
+                                <td>@ctt.fullname</td>
+                                <td>@ctt.membership_number</td>
+                                <td>@pplvote.Where(dbl => dbl.contestantId == ctt.Id).Count()</td>
+                            </tr>
+                            countingrow++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- //area-chart -->
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+        <div class="agile-bottom-grids">
+            <div class="col-md-6 agile-bottom-right">
+                <div class="agile-bottom-grid">
+                    <div class="area-grids-heading">
+                        <h3>Stacked Bars chart</h3>
+                    </div>
+                    <div id="graph6"></div>
+                    <script>
+                        // Use Morris.Bar
+                        Morris.Bar({
+                            element: 'graph6',
+                            data: [
+                              {x: '2011 Q1', y: 0},
+                              {x: '2011 Q2', y: 1},
+                              {x: '2011 Q3', y: 2},
+                              {x: '2011 Q4', y: 3},
+                              {x: '2012 Q1', y: 4},
+                              {x: '2012 Q2', y: 5},
+                              {x: '2012 Q3', y: 6},
+                              {x: '2012 Q4', y: 7},
+                              {x: '2013 Q1', y: 8}
+                            ],
+                            xkey: 'x',
+                            ykeys: ['y'],
+                            labels: ['Y'],
+                            barColors: function (row, series, type) {
+                                if (type === 'bar') {
+                                    var red = Math.ceil(255 * row.y / this.ymax);
+                                    return 'rgb(' + red + ',0,0)';
+                                }
+                                else {
+                                    return '#000';
+                                }
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="col-md-6 agile-bottom-left">
+                <div class="agile-bottom-grid">
+                    <div class="area-grids-heading">
+                        <h3>Stacked Bars chart</h3>
+                    </div>
+                    <div id="graph5"></div>
+                    <script>
+                        // Use Morris.Bar
+                        Morris.Bar({
+                            element: 'graph5',
+                            data: [
+                              {x: '2011 Q1', y: 3, z: 2, a: 3},
+                              {x: '2011 Q2', y: 2, z: null, a: 1},
+                              {x: '2011 Q3', y: 0, z: 2, a: 4},
+                              {x: '2011 Q4', y: 2, z: 4, a: 3}
+                            ],
+                            xkey: 'x',
+                            ykeys: ['y', 'z', 'a'],
+                            labels: ['Y', 'Z', 'A'],
+                            stacked: true
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+        <div class="agile-last-grids">
+            <div class="col-md-4 agile-last-left">
+                <div class="agile-last-grid">
+                    <div class="area-grids-heading">
+                        <h3>Daylight savings time</h3>
+                    </div>
+                    <div id="graph7"></div>
+                    <script>
+                        // This crosses a DST boundary in the UK.
+                        Morris.Area({
+                            element: 'graph7',
+                            data: [
+                              {x: '2013-03-30 22:00:00', y: 3, z: 3},
+                              {x: '2013-03-31 00:00:00', y: 2, z: 0},
+                              {x: '2013-03-31 02:00:00', y: 0, z: 2},
+                              {x: '2013-03-31 04:00:00', y: 4, z: 4}
+                            ],
+                            xkey: 'x',
+                            ykeys: ['y', 'z'],
+                            labels: ['Y', 'Z']
+                        });
+                    </script>
+
+                </div>
+            </div>
+            <div class="col-md-4 agile-last-left agile-last-middle">
+                <div class="agile-last-grid">
+                    <div class="area-grids-heading">
+                        <h3>Daylight savings time</h3>
+                    </div>
+                    <div id="graph8"></div>
+                    <script>
+                        /* data stolen from http://howmanyleft.co.uk/vehicle/jaguar_'e'_type */
+                        var day_data = [
+						  {"period": "2012-10-01", "licensed": 3407, "sorned": 660},
+						  {"period": "2012-09-30", "licensed": 3351, "sorned": 629},
+						  {"period": "2012-09-29", "licensed": 3269, "sorned": 618},
+						  {"period": "2012-09-20", "licensed": 3246, "sorned": 661},
+						  {"period": "2012-09-19", "licensed": 3257, "sorned": 667},
+						  {"period": "2012-09-18", "licensed": 3248, "sorned": 627},
+						  {"period": "2012-09-17", "licensed": 3171, "sorned": 660},
+						  {"period": "2012-09-16", "licensed": 3171, "sorned": 676},
+						  {"period": "2012-09-15", "licensed": 3201, "sorned": 656},
+						  {"period": "2012-09-10", "licensed": 3215, "sorned": 622}
+                        ];
+                        Morris.Bar({
+                            element: 'graph8',
+                            data: day_data,
+                            xkey: 'period',
+                            ykeys: ['licensed', 'sorned'],
+                            labels: ['Licensed', 'SORN'],
+                            xLabelAngle: 60
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="col-md-4 agile-last-left agile-last-right">
+                <div class="agile-last-grid">
+                    <div class="area-grids-heading">
+                        <h3>Daylight savings time</h3>
+                    </div>
+                    <div id="graph9"></div>
+                    <script>
+                        var day_data = [
+						  {"elapsed": "I", "value": 34},
+						  {"elapsed": "II", "value": 24},
+						  {"elapsed": "III", "value": 3},
+						  {"elapsed": "IV", "value": 12},
+						  {"elapsed": "V", "value": 13},
+						  {"elapsed": "VI", "value": 22},
+						  {"elapsed": "VII", "value": 5},
+						  {"elapsed": "VIII", "value": 26},
+						  {"elapsed": "IX", "value": 12},
+						  {"elapsed": "X", "value": 19}
+                        ];
+                        Morris.Line({
+                            element: 'graph9',
+                            data: day_data,
+                            xkey: 'elapsed',
+                            ykeys: ['value'],
+                            labels: ['value'],
+                            parseTime: false
+                        });
+                    </script>
+
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+        
+    </div>
+@*<script src="js/bootstrap.js"></script>
+<script src="js/proton.js"></script>*@
+
+<script src="~/adminjs/bootstrap.js"></script>
+<script src="~/adminjs/proton.js"></script>

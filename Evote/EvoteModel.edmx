@@ -1,0 +1,740 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="hrModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="activityLogs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fullname" Type="varchar(max)" />
+          <Property Name="membership_number" Type="varchar(max)" />
+          <Property Name="datetime" Type="datetime" />
+          <Property Name="contestantId" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Admins">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar(max)" />
+          <Property Name="password" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="BIs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="totalVote" Type="int" />
+          <Property Name="totalContestants" Type="int" />
+        </EntityType>
+        <EntityType Name="Committee_member">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cmvn" Type="varchar(max)" />
+          <Property Name="MemberId" Type="int" />
+        </EntityType>
+        <EntityType Name="Contestants">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VotingSessionId" Type="int" />
+          <Property Name="manifesto" Type="varchar(max)" />
+          <Property Name="CampaignPictureName" Type="varchar(max)" />
+          <Property Name="CampaignPictureContent" Type="varbinary(max)" />
+          <Property Name="CampaignPictureFileType" Type="varchar(max)" />
+          <Property Name="voteNumber" Type="int" />
+          <Property Name="BIId" Type="int" />
+          <Property Name="percentageVote" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PositionId" Type="int" />
+          <Property Name="status" Type="bit" />
+          <Property Name="MemberId" Type="int" />
+          <Property Name="email" Type="varchar(max)" />
+          <Property Name="password" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="EligibleMembers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fullname" Type="varchar(max)" />
+          <Property Name="phone_number" Type="varchar(max)" />
+          <Property Name="membership_number" Type="varchar(max)" />
+          <Property Name="email" Type="varchar(max)" />
+          <Property Name="password" Type="varchar(max)" />
+          <Property Name="confirmPassword" Type="varchar(max)" />
+          <Property Name="hash" Type="varchar(max)" />
+          <Property Name="vote_status" Type="varchar(max)" />
+          <Property Name="ImageName" Type="varchar(max)" />
+          <Property Name="ImageContent" Type="varbinary(max)" />
+          <Property Name="ImageFileType" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="membershipTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Type" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Positions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Post" Type="varchar(max)" />
+          <Property Name="Description" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="posts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="postTitle" Type="varchar(max)" />
+          <Property Name="postDescription" Type="varchar(max)" />
+          <Property Name="postImageName" Type="varchar(max)" />
+          <Property Name="postImageContent" Type="varbinary(max)" />
+          <Property Name="postImageFileType" Type="varchar(max)" />
+          <Property Name="startDate" Type="datetime" />
+          <Property Name="closeDate" Type="datetime" />
+          <Property Name="numberOfContestants" Type="int" />
+          <Property Name="voteStatus" Type="bit" />
+        </EntityType>
+        <EntityType Name="voteLogs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="datetime" Type="datetime" />
+          <Property Name="contestantId" Type="int" />
+          <Property Name="VotingSessionId" Type="int" />
+          <Property Name="memberId" Type="int" />
+        </EntityType>
+        <EntityType Name="VotingSessions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="postImageName" Type="varchar(max)" />
+          <Property Name="postImageContent" Type="varbinary(max)" />
+          <Property Name="postImageFileType" Type="varchar(max)" />
+          <Property Name="startDate" Type="datetime" />
+          <Property Name="startTime" Type="time" Precision="7" />
+          <Property Name="closeDate" Type="datetime" />
+          <Property Name="closeTime" Type="time" Precision="7" />
+          <Property Name="startDateTime" Type="datetime" />
+          <Property Name="closeDateTime" Type="datetime" />
+          <Property Name="PositionId" Type="int" />
+          <Property Name="status" Type="bit" />
+          <Property Name="moment" Type="varchar(max)" />
+          <Property Name="BIId" Type="int" />
+          <Property Name="VotingSessionName" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="winners">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ContestantId" Type="varchar(max)" />
+          <Property Name="BIId" Type="varchar(max)" />
+          <Property Name="date" Type="datetime" />
+          <Property Name="time" Type="time" Precision="7" />
+        </EntityType>
+        <Association Name="FK_Committee_member_EligibleMember">
+          <End Role="EligibleMembers" Type="Self.EligibleMembers" Multiplicity="0..1" />
+          <End Role="Committee_member" Type="Self.Committee_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EligibleMembers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Committee_member">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contestant_EligibleMember">
+          <End Role="EligibleMembers" Type="Self.EligibleMembers" Multiplicity="0..1" />
+          <End Role="Contestants" Type="Self.Contestants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EligibleMembers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contestants">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contestant_ToVotingSession">
+          <End Role="VotingSessions" Type="Self.VotingSessions" Multiplicity="0..1" />
+          <End Role="Contestants" Type="Self.Contestants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VotingSessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contestants">
+              <PropertyRef Name="VotingSessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_voteLog_Contestant">
+          <End Role="Contestants" Type="Self.Contestants" Multiplicity="0..1" />
+          <End Role="voteLogs" Type="Self.voteLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contestants">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="voteLogs">
+              <PropertyRef Name="contestantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_voteLog_EligibleMember">
+          <End Role="EligibleMembers" Type="Self.EligibleMembers" Multiplicity="0..1" />
+          <End Role="voteLogs" Type="Self.voteLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EligibleMembers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="voteLogs">
+              <PropertyRef Name="memberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_voteLog_VotingSession">
+          <End Role="VotingSessions" Type="Self.VotingSessions" Multiplicity="0..1" />
+          <End Role="voteLogs" Type="Self.voteLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VotingSessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="voteLogs">
+              <PropertyRef Name="VotingSessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VotingSession_Position">
+          <End Role="Positions" Type="Self.Positions" Multiplicity="0..1" />
+          <End Role="VotingSessions" Type="Self.VotingSessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Positions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VotingSessions">
+              <PropertyRef Name="PositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="hrModelStoreContainer">
+          <EntitySet Name="activityLogs" EntityType="Self.activityLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BIs" EntityType="Self.BIs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Committee_member" EntityType="Self.Committee_member" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contestants" EntityType="Self.Contestants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EligibleMembers" EntityType="Self.EligibleMembers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="membershipTypes" EntityType="Self.membershipTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Positions" EntityType="Self.Positions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="posts" EntityType="Self.posts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="voteLogs" EntityType="Self.voteLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VotingSessions" EntityType="Self.VotingSessions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="winners" EntityType="Self.winners" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Committee_member_EligibleMember" Association="Self.FK_Committee_member_EligibleMember">
+            <End Role="EligibleMembers" EntitySet="EligibleMembers" />
+            <End Role="Committee_member" EntitySet="Committee_member" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contestant_EligibleMember" Association="Self.FK_Contestant_EligibleMember">
+            <End Role="EligibleMembers" EntitySet="EligibleMembers" />
+            <End Role="Contestants" EntitySet="Contestants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contestant_ToVotingSession" Association="Self.FK_Contestant_ToVotingSession">
+            <End Role="VotingSessions" EntitySet="VotingSessions" />
+            <End Role="Contestants" EntitySet="Contestants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_voteLog_Contestant" Association="Self.FK_voteLog_Contestant">
+            <End Role="Contestants" EntitySet="Contestants" />
+            <End Role="voteLogs" EntitySet="voteLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_voteLog_EligibleMember" Association="Self.FK_voteLog_EligibleMember">
+            <End Role="EligibleMembers" EntitySet="EligibleMembers" />
+            <End Role="voteLogs" EntitySet="voteLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_voteLog_VotingSession" Association="Self.FK_voteLog_VotingSession">
+            <End Role="VotingSessions" EntitySet="VotingSessions" />
+            <End Role="voteLogs" EntitySet="voteLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VotingSession_Position" Association="Self.FK_VotingSession_Position">
+            <End Role="Positions" EntitySet="Positions" />
+            <End Role="VotingSessions" EntitySet="VotingSessions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="hrModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="activityLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fullname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="membership_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="datetime" Type="DateTime" Precision="3" />
+          <Property Name="contestantId" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="BI">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="totalVote" Type="Int32" />
+          <Property Name="totalContestants" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Committee_member">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cmvn" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="MemberId" Type="Int32" />
+          <NavigationProperty Name="EligibleMember" Relationship="Self.FK_Committee_member_EligibleMember" FromRole="Committee_member" ToRole="EligibleMembers" />
+        </EntityType>
+        <EntityType Name="Contestant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VotingSessionId" Type="Int32" />
+          <Property Name="manifesto" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CampaignPictureName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CampaignPictureContent" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="CampaignPictureFileType" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="voteNumber" Type="Int32" />
+          <Property Name="BIId" Type="Int32" />
+          <Property Name="percentageVote" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PositionId" Type="Int32" />
+          <Property Name="status" Type="Boolean" />
+          <Property Name="MemberId" Type="Int32" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EligibleMember" Relationship="Self.FK_Contestant_EligibleMember" FromRole="Contestants" ToRole="EligibleMembers" />
+          <NavigationProperty Name="VotingSession" Relationship="Self.FK_Contestant_ToVotingSession" FromRole="Contestants" ToRole="VotingSessions" />
+          <NavigationProperty Name="voteLogs" Relationship="Self.FK_voteLog_Contestant" FromRole="Contestants" ToRole="voteLogs" />
+        </EntityType>
+        <EntityType Name="EligibleMember">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fullname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="phone_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="membership_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="confirmPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="hash" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="vote_status" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ImageName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ImageContent" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ImageFileType" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Committee_member" Relationship="Self.FK_Committee_member_EligibleMember" FromRole="EligibleMembers" ToRole="Committee_member" />
+          <NavigationProperty Name="Contestants" Relationship="Self.FK_Contestant_EligibleMember" FromRole="EligibleMembers" ToRole="Contestants" />
+          <NavigationProperty Name="voteLogs" Relationship="Self.FK_voteLog_EligibleMember" FromRole="EligibleMembers" ToRole="voteLogs" />
+        </EntityType>
+        <EntityType Name="membershipType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Post" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="VotingSessions" Relationship="Self.FK_VotingSession_Position" FromRole="Positions" ToRole="VotingSessions" />
+        </EntityType>
+        <EntityType Name="post">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="postTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="postDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="postImageName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="postImageContent" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="postImageFileType" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="startDate" Type="DateTime" Precision="3" />
+          <Property Name="closeDate" Type="DateTime" Precision="3" />
+          <Property Name="numberOfContestants" Type="Int32" />
+          <Property Name="voteStatus" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="voteLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="datetime" Type="DateTime" Precision="3" />
+          <Property Name="contestantId" Type="Int32" />
+          <Property Name="VotingSessionId" Type="Int32" />
+          <Property Name="memberId" Type="Int32" />
+          <NavigationProperty Name="Contestant" Relationship="Self.FK_voteLog_Contestant" FromRole="voteLogs" ToRole="Contestants" />
+          <NavigationProperty Name="EligibleMember" Relationship="Self.FK_voteLog_EligibleMember" FromRole="voteLogs" ToRole="EligibleMembers" />
+          <NavigationProperty Name="VotingSession" Relationship="Self.FK_voteLog_VotingSession" FromRole="voteLogs" ToRole="VotingSessions" />
+        </EntityType>
+        <EntityType Name="VotingSession">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="postImageName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="postImageContent" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="postImageFileType" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="startDate" Type="DateTime" Precision="3" />
+          <Property Name="startTime" Type="Time" Precision="7" />
+          <Property Name="closeDate" Type="DateTime" Precision="3" />
+          <Property Name="closeTime" Type="Time" Precision="7" />
+          <Property Name="startDateTime" Type="DateTime" Precision="3" />
+          <Property Name="closeDateTime" Type="DateTime" Precision="3" />
+          <Property Name="PositionId" Type="Int32" />
+          <Property Name="status" Type="Boolean" />
+          <Property Name="moment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BIId" Type="Int32" />
+          <Property Name="VotingSessionName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Contestants" Relationship="Self.FK_Contestant_ToVotingSession" FromRole="VotingSessions" ToRole="Contestants" />
+          <NavigationProperty Name="Position" Relationship="Self.FK_VotingSession_Position" FromRole="VotingSessions" ToRole="Positions" />
+          <NavigationProperty Name="voteLogs" Relationship="Self.FK_voteLog_VotingSession" FromRole="VotingSessions" ToRole="voteLogs" />
+        </EntityType>
+        <EntityType Name="winner">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContestantId" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BIId" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <Property Name="time" Type="Time" Precision="7" />
+        </EntityType>
+        <Association Name="FK_Committee_member_EligibleMember">
+          <End Role="EligibleMembers" Type="Self.EligibleMember" Multiplicity="0..1" />
+          <End Role="Committee_member" Type="Self.Committee_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EligibleMembers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Committee_member">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contestant_EligibleMember">
+          <End Role="EligibleMembers" Type="Self.EligibleMember" Multiplicity="0..1" />
+          <End Role="Contestants" Type="Self.Contestant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EligibleMembers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contestants">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contestant_ToVotingSession">
+          <End Role="VotingSessions" Type="Self.VotingSession" Multiplicity="0..1" />
+          <End Role="Contestants" Type="Self.Contestant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VotingSessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contestants">
+              <PropertyRef Name="VotingSessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_voteLog_Contestant">
+          <End Role="Contestants" Type="Self.Contestant" Multiplicity="0..1" />
+          <End Role="voteLogs" Type="Self.voteLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contestants">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="voteLogs">
+              <PropertyRef Name="contestantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_voteLog_EligibleMember">
+          <End Role="EligibleMembers" Type="Self.EligibleMember" Multiplicity="0..1" />
+          <End Role="voteLogs" Type="Self.voteLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EligibleMembers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="voteLogs">
+              <PropertyRef Name="memberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VotingSession_Position">
+          <End Role="Positions" Type="Self.Position" Multiplicity="0..1" />
+          <End Role="VotingSessions" Type="Self.VotingSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Positions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VotingSessions">
+              <PropertyRef Name="PositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_voteLog_VotingSession">
+          <End Role="VotingSessions" Type="Self.VotingSession" Multiplicity="0..1" />
+          <End Role="voteLogs" Type="Self.voteLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VotingSessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="voteLogs">
+              <PropertyRef Name="VotingSessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="hrEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="activityLogs" EntityType="Self.activityLog" />
+          <EntitySet Name="Admins" EntityType="Self.Admin" />
+          <EntitySet Name="BIs" EntityType="Self.BI" />
+          <EntitySet Name="Committee_member" EntityType="Self.Committee_member" />
+          <EntitySet Name="Contestants" EntityType="Self.Contestant" />
+          <EntitySet Name="EligibleMembers" EntityType="Self.EligibleMember" />
+          <EntitySet Name="membershipTypes" EntityType="Self.membershipType" />
+          <EntitySet Name="Positions" EntityType="Self.Position" />
+          <EntitySet Name="posts" EntityType="Self.post" />
+          <EntitySet Name="voteLogs" EntityType="Self.voteLog" />
+          <EntitySet Name="VotingSessions" EntityType="Self.VotingSession" />
+          <EntitySet Name="winners" EntityType="Self.winner" />
+          <AssociationSet Name="FK_Committee_member_EligibleMember" Association="Self.FK_Committee_member_EligibleMember">
+            <End Role="EligibleMembers" EntitySet="EligibleMembers" />
+            <End Role="Committee_member" EntitySet="Committee_member" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contestant_EligibleMember" Association="Self.FK_Contestant_EligibleMember">
+            <End Role="EligibleMembers" EntitySet="EligibleMembers" />
+            <End Role="Contestants" EntitySet="Contestants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contestant_ToVotingSession" Association="Self.FK_Contestant_ToVotingSession">
+            <End Role="VotingSessions" EntitySet="VotingSessions" />
+            <End Role="Contestants" EntitySet="Contestants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_voteLog_Contestant" Association="Self.FK_voteLog_Contestant">
+            <End Role="Contestants" EntitySet="Contestants" />
+            <End Role="voteLogs" EntitySet="voteLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_voteLog_EligibleMember" Association="Self.FK_voteLog_EligibleMember">
+            <End Role="EligibleMembers" EntitySet="EligibleMembers" />
+            <End Role="voteLogs" EntitySet="voteLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VotingSession_Position" Association="Self.FK_VotingSession_Position">
+            <End Role="Positions" EntitySet="Positions" />
+            <End Role="VotingSessions" EntitySet="VotingSessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_voteLog_VotingSession" Association="Self.FK_voteLog_VotingSession">
+            <End Role="VotingSessions" EntitySet="VotingSessions" />
+            <End Role="voteLogs" EntitySet="voteLogs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="hrModelStoreContainer" CdmEntityContainer="hrEntities">
+          <EntitySetMapping Name="activityLogs">
+            <EntityTypeMapping TypeName="hrModel.activityLog">
+              <MappingFragment StoreEntitySet="activityLogs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="membership_number" ColumnName="membership_number" />
+                <ScalarProperty Name="datetime" ColumnName="datetime" />
+                <ScalarProperty Name="contestantId" ColumnName="contestantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="hrModel.Admin">
+              <MappingFragment StoreEntitySet="Admins">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BIs">
+            <EntityTypeMapping TypeName="hrModel.BI">
+              <MappingFragment StoreEntitySet="BIs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="totalVote" ColumnName="totalVote" />
+                <ScalarProperty Name="totalContestants" ColumnName="totalContestants" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Committee_member">
+            <EntityTypeMapping TypeName="hrModel.Committee_member">
+              <MappingFragment StoreEntitySet="Committee_member">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="cmvn" ColumnName="cmvn" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contestants">
+            <EntityTypeMapping TypeName="hrModel.Contestant">
+              <MappingFragment StoreEntitySet="Contestants">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="VotingSessionId" ColumnName="VotingSessionId" />
+                <ScalarProperty Name="manifesto" ColumnName="manifesto" />
+                <ScalarProperty Name="CampaignPictureName" ColumnName="CampaignPictureName" />
+                <ScalarProperty Name="CampaignPictureContent" ColumnName="CampaignPictureContent" />
+                <ScalarProperty Name="CampaignPictureFileType" ColumnName="CampaignPictureFileType" />
+                <ScalarProperty Name="voteNumber" ColumnName="voteNumber" />
+                <ScalarProperty Name="BIId" ColumnName="BIId" />
+                <ScalarProperty Name="percentageVote" ColumnName="percentageVote" />
+                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EligibleMembers">
+            <EntityTypeMapping TypeName="hrModel.EligibleMember">
+              <MappingFragment StoreEntitySet="EligibleMembers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+                <ScalarProperty Name="membership_number" ColumnName="membership_number" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="confirmPassword" ColumnName="confirmPassword" />
+                <ScalarProperty Name="hash" ColumnName="hash" />
+                <ScalarProperty Name="vote_status" ColumnName="vote_status" />
+                <ScalarProperty Name="ImageName" ColumnName="ImageName" />
+                <ScalarProperty Name="ImageContent" ColumnName="ImageContent" />
+                <ScalarProperty Name="ImageFileType" ColumnName="ImageFileType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="membershipTypes">
+            <EntityTypeMapping TypeName="hrModel.membershipType">
+              <MappingFragment StoreEntitySet="membershipTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Positions">
+            <EntityTypeMapping TypeName="hrModel.Position">
+              <MappingFragment StoreEntitySet="Positions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Post" ColumnName="Post" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="posts">
+            <EntityTypeMapping TypeName="hrModel.post">
+              <MappingFragment StoreEntitySet="posts">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="postTitle" ColumnName="postTitle" />
+                <ScalarProperty Name="postDescription" ColumnName="postDescription" />
+                <ScalarProperty Name="postImageName" ColumnName="postImageName" />
+                <ScalarProperty Name="postImageContent" ColumnName="postImageContent" />
+                <ScalarProperty Name="postImageFileType" ColumnName="postImageFileType" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="closeDate" ColumnName="closeDate" />
+                <ScalarProperty Name="numberOfContestants" ColumnName="numberOfContestants" />
+                <ScalarProperty Name="voteStatus" ColumnName="voteStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="voteLogs">
+            <EntityTypeMapping TypeName="hrModel.voteLog">
+              <MappingFragment StoreEntitySet="voteLogs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="datetime" ColumnName="datetime" />
+                <ScalarProperty Name="contestantId" ColumnName="contestantId" />
+                <ScalarProperty Name="VotingSessionId" ColumnName="VotingSessionId" />
+                <ScalarProperty Name="memberId" ColumnName="memberId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VotingSessions">
+            <EntityTypeMapping TypeName="hrModel.VotingSession">
+              <MappingFragment StoreEntitySet="VotingSessions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="postImageName" ColumnName="postImageName" />
+                <ScalarProperty Name="postImageContent" ColumnName="postImageContent" />
+                <ScalarProperty Name="postImageFileType" ColumnName="postImageFileType" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="startTime" ColumnName="startTime" />
+                <ScalarProperty Name="closeDate" ColumnName="closeDate" />
+                <ScalarProperty Name="closeTime" ColumnName="closeTime" />
+                <ScalarProperty Name="startDateTime" ColumnName="startDateTime" />
+                <ScalarProperty Name="closeDateTime" ColumnName="closeDateTime" />
+                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="moment" ColumnName="moment" />
+                <ScalarProperty Name="BIId" ColumnName="BIId" />
+                <ScalarProperty Name="VotingSessionName" ColumnName="VotingSessionName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="winners">
+            <EntityTypeMapping TypeName="hrModel.winner">
+              <MappingFragment StoreEntitySet="winners">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ContestantId" ColumnName="ContestantId" />
+                <ScalarProperty Name="BIId" ColumnName="BIId" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

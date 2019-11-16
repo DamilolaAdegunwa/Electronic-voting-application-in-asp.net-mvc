@@ -1,0 +1,133 @@
+﻿@using Evote.Models.Helpers
+@{
+    ViewBag.Title = "CreateVotingSession";
+    //var subject = "";
+    //var message = "";
+    //System.Web.HttpContext.Current.Session["sessionString"] = "Getting Started!!";
+    //ViewData["sessionString"] = System.Web.HttpContext.Current.Session["sessionString"] as String;
+    //string value = Session.GetDataFromSession<string>("sessionString");
+    //ViewData["sessionStringByExtensions"] = value;
+}
+@{
+    var t = DateTime.Today;
+    var tm = "";if(t.Month < 10){ tm = "0" + t.Month; } else { tm = t.Month.ToString(); }
+    var td = "";if (t.Day < 10){td = "0" + t.Day;} else { td = t.Day.ToString(); }
+    var today = t.Year+"-"+tm+"-"+td;
+}
+<div class="agile-grids" style="min-height:100vh">
+    <!-- CreateVoteSession-page -->
+    @Html.BootstrapValidationSummary()
+    @Html.ShowFlashMessage()
+    <div class="progressbar-heading grids-heading">
+        <h2>Create a New Voting Session</h2>
+
+    </div>
+    <div class="banner">
+        <h2>
+            <a href="@Url.Action("Dashboard", "Admin")">Admin</a>
+            <i class="fa fa-angle-right"></i>
+            <a href="@Url.Action("Dashboard", "Admin")">CreateVotingSession</a>
+        </h2>
+    </div>
+    <div class="panel panel-widget forms-panel">
+        <div class="forms">
+            <div class="form-grids form-grids-right">
+                <div class="widget-shadow " data-example-id="basic-forms">
+                    <div class="form-title">
+                        <h4>Input information here :</h4>
+                    </div>
+                    <div class="form-body">
+                        <form class="form-horizontal" method="post" action="@Url.Action("CreateVotingSession", "Admin", new { })" enctype="multipart/form-data">
+                            @{
+                                hrEntities db = new hrEntities();
+                            }
+                            <div class="form-group">
+                                @* post title *@
+                                <label for="positionId" class="col-sm-2 control-label"> Position </label>
+                                <div class="col-sm-9">
+                                    @*<input type="text" name="positionId" class="form-control" id="postTitle" placeholder="Position" required>*@
+                                    <select name="positionId" class="form-control" id="positionId" placeholder="Position" required>
+                                        @foreach (var item in db.Positions)
+                                        {
+                                            if (db.VotingSessions.Where(dbl => dbl.PositionId == item.Id && dbl.status == true).Count() == 0)
+                                            {
+                                                <option value="@item.Id">@item.Post</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            @*<div class="form-group">
+                                <label for="postTitle" class="col-sm-2 control-label"> Position </label>
+                                <div class="col-sm-9">
+                                    <select name="PositionId" class="form-control" id="PositionId" placeholder="Position" required>
+                                        @foreach (var item in db.Positions)
+                                        {
+                                            <option value="@item.Id">@item.Post</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>*@
+
+                            @*<div class="form-group">
+                                
+                                <label for="postDescription" class="col-sm-2 control-label">Post Description</label>
+                                <div class="col-sm-9">
+                                    <textarea name="postDescription" id="postDescription" cols="50" rows="6" class="form-control" required></textarea>
+                                </div>
+                            </div>*@
+                            <div class="form-group">
+                                @* start date *@
+                                <label for="startDate" class="col-sm-2 control-label"> Start Date </label>
+                                <div class="col-sm-9">
+                                    <input type="date" min="@today" name="startDate" class="form-control" id="startDate" placeholder="dd/mm/yyyy" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @* start time *@ @*min="12:00" max="18:00"*@
+                                <label for="startTime" class="col-sm-2 control-label"> Start Time </label>
+                                <div class="col-sm-9">
+                                    <input type="time" name="startTime" class="form-control" id="startTime" placeholder="hh:mm:ss" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @* close date *@
+                                <label for="closeDate" class="col-sm-2 control-label"> Close Date </label>
+                                <div class="col-sm-9">
+                                    <input type="date" min="@today" name="closeDate" class="form-control" id="closeDate" placeholder="dd/mm/yyyy" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @* close time *@ @*min="12:00" max="18:00"*@
+                                <label for="closeTime" class="col-sm-2 control-label"> Close Time </label>
+                                <div class="col-sm-9">
+                                    <input type="time" name="closeTime" class="form-control" id="closeTime" placeholder="hh:mm:ss" required>
+                                </div>
+                            </div>
+                            <fieldset>
+                                <legend>E-Mail Message: </legend>
+                                <div class="form-group">
+                                    <label for="subject" class="col-sm-2 control-label">Subject</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="subject" class="form-control" id="subject" placeholder="Subject" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message" class="col-sm-2 control-label">Message</label>
+                                    <div class="col-sm-9">
+                                        <textarea name="message" id="message" cols="50" rows="6" class="form-control" required></textarea>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <br/>
+                            <div class="col-sm-offset-2">
+                                <button type="submit" class="btn btn-default w3ls-button"> Submit </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //CreateVoteSession-page -->
+</div>
